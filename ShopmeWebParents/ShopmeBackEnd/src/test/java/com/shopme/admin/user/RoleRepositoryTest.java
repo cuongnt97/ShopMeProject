@@ -20,7 +20,9 @@ public class RoleRepositoryTest {
         Role roleAdmin = new Role("Admin", "Manage everything");
         //repo.save(roleAdmin);
         Role savedRole = repo.save(roleAdmin);
-        assertThat(savedRole.getId()).isGreaterThan(0);
+        System.out.println(savedRole.getId());
+        System.out.println(savedRole.getName());
+        System.out.println(savedRole.getDescription());
     }
 
 }
