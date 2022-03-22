@@ -19,7 +19,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "user_id")
-    private Long id;
+    private int id;
 
     @Column(name = "email", length = 128, nullable = false, unique = true)
     private String email;
@@ -40,7 +40,7 @@ public class User {
 
     @ManyToMany
     @JoinTable(
-            name = "roles",
+            name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
@@ -50,5 +50,16 @@ public class User {
         this.roles.add(role);
     }
 
+    public String getFullName(){return firstName + " " + lastName;}
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", roles=" + roles +
+                '}';
+    }
 }

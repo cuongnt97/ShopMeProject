@@ -38,4 +38,5 @@ public class RoleRepositoryTest {
 
         repo.saveAll(List.of(roleSalesperson, roleEditor, roleShipper, roleAssistant));
     }
+
 }
