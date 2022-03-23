@@ -4,7 +4,7 @@
     <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scaled=1.0">
 
-    <title>Home - Shopme Admin</title>
+    <title>Manage User - Create</title>
 
     <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
     <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
@@ -76,9 +76,44 @@
         </nav>
     </div>
     <div>
-        <h1>Shopme Control Panel</h1>
+        <h2>Manage Users | Create New User</h2>
     </div>
 
+    <form th:action="@{/users/save}" method="post" style="max-width:700px; margin:0 auto" th:object="${user}">
+        <div class="border border-secondary rounded p-3">
+            <div class="form-group row">
+                <label class="=col-sm-4 col-form-label">Email:</label>
+                <div class="col-sm-8">
+                    <input type="email" class="form-control" th:field="*{email}" required minlength="8" maxlength="128"/>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="=col-sm-4 col-form-label">First Name</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" th:field="*{firstName}" required minlength="2" maxlength="40"/>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="=col-sm-4 col-form-label">Last Name</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" th:field="*{lastName}" required minlength="2" maxlength="40"/>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="=col-sm-4 col-form-label">Password</label>
+                <div class="col-sm-8">
+                    <input type="password" class="form-control" th:field="*{password}" required minlength="8" maxlength="20"/>
+                </div>
+            </div>
+        <div class="text-center">
+          <input type="submit" value="Save" class="btn btn-primary m-3" />
+          <input type="button" value="Cancel" class="btn btn-secondary"/>
+        </div>
+        </div>
+    </form>
     <div class="text-center">
         <p><strong><em>Shopme Control Panel - Copyright &copy; Shopme</em></strong></p>
     </div>

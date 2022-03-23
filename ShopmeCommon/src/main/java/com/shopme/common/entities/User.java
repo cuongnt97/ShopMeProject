@@ -19,7 +19,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "user_id")
-    private int id;
+    private int userId;
 
     @Column(name = "email", length = 128, nullable = false, unique = true)
     private String email;
@@ -55,10 +55,9 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-                "id=" + id +
+                "id=" + userId +
                 ", email='" + email + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
+                ", fullName='" + firstName + " " + lastName + '\'' +
                 ", roles=" + roles +
                 '}';
     }
