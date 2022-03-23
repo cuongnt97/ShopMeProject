@@ -15,7 +15,6 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@Rollback(value = false)
 public class UserRepositoryTest {
     @Autowired
     private UserRepository userRepository;
@@ -86,4 +85,10 @@ public class UserRepositoryTest {
         userRepository.deleteById(2);
     }
 
+    @Test
+    public void getUserByEmail(){
+        String email = "cuong97ndc@gmail.com";
+        User user = userRepository.getUserByEmail(email);
+        System.out.println(user);
+    }
 }

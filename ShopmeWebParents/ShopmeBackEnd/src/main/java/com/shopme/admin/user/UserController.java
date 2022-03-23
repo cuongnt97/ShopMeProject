@@ -1,11 +1,15 @@
 package com.shopme.admin.user;
 
+import com.shopme.common.entities.Role;
 import com.shopme.common.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -17,21 +21,26 @@ public class UserController {
 
     @GetMapping("/users")
     public String listAllUser(Model model) {
-        List<User> listUsers = service.listAllUser();
+        List<User> listUsers = service.getListUsers();
         model.addAttribute("listUsers", listUsers);
         return "list_users";
     }
 
     @GetMapping("/users/new")
     public String createNewUser(Model model){
+        List<Role> listRoles = service.getListRoles();
         User user = new User();
+        user.setEnable(true);
+
+        model.addAttribute( "listRoles", listRoles);
         model.addAttribute(user);
         return "user_form";
     }
 
-    @PutMapping("/users/save")
-    public String saveUser(Model model, User user){
-        System.out.println(user);
+    @PostMapping("/users/save")
+    public String saveUser(User user, RedirectAttributes redirectAttributes){
+        service.createUser(user);
+        redirectAttributes.addFlashAttribute("message", "The user has been added successfully.");
         return "redirect:/users";
     }
 
