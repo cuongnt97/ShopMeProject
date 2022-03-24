@@ -152,6 +152,7 @@
                 <div class="modal-body">
                     <span id="modalBody"></span>
                 </div>
+
                 <div id="modal-footer">
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
                 </div>
@@ -180,19 +181,18 @@
             if(response == "OK") {
                 form.submit();
             } else if(response == "Duplicated"){
-                showDialog("Warning", "Another user using email address " + userEmail);
+                showModalDialog("Warning", "Another user using email address " + userEmail);
             }
         });
         return false;
     }
 
-    function showDialog(title, message) {
-        $("modalTitle").val(title);
-        $("modalBody").val(message);
-        $("modalDialog").modal;
+function showModalDialog(title, message) {
+	$("#modalTitle").text(title);
+	$("#modalBody").text(message);
+	$("#modalDialog").modal();
+};
 
-
-    }
 
 </script>
 </body>
