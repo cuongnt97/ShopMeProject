@@ -111,9 +111,9 @@
 
                 </td>
                 <td>
-                    <a class="fa-solid fa-pen-to-square fa-2x" th:href="@{'/users/edit/userId=' + ${user.userId} }"></a>
+                    <a class="fa-solid fa-pen-to-square fa-2x" th:href="@{'/users/edit/' + ${user.userId} }" title="Edit this user"></a>
                     &nbsp;&nbsp;&nbsp;
-                    <a class="fa-solid fa-trash fa-2x" href=""></a>
+                    <a class="fa-solid fa-trash fa-2x" th:href="@{'/users/delete/' + ${user.userId} }" title="Delete this user"></a>
                 </td>
             </tr>
             </tbody>

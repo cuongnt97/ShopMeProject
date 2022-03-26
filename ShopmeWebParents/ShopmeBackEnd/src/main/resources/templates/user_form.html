@@ -80,8 +80,8 @@
     </div>
 
     <form th:action="@{/users/save}" method="post" style="max-width:700px; margin:0 auto" th:object="${user}"
-          onsubmit="return checkEmailUnique(this)">
-        <input type="hidden" th:field="*{id}">
+          onsubmit="return checkEmailUnique(this);">
+        <input type="hidden" th:field="*{userId}">
         <div class="border border-secondary rounded p-3">
             <div class="form-group row">
                 <label class="col-sm-4 col-form-label">Email:</label>
@@ -111,7 +111,9 @@
             <div class="form-group row">
                 <label class="col-sm-4 col-form-label">Password</label>
                 <div class="col-sm-8">
-                    <input type="password" class="form-control" th:field="*{password}" required minlength="8"
+                    <input th:if="${user.userId == null}" type="password" class="form-control" th:field="*{password}" required minlength="8"
+                           maxlength="20"/>
+                    <input th:if="${user.userId != null}" type="password" class="form-control" th:field="*{password}" minlength="8"
                            maxlength="20"/>
                 </div>
             </div>
@@ -132,7 +134,7 @@
             <div class="form-group row">
                 <label class="col-sm-4 col-form-label">Enable</label>
                 <div class="col-sm-8">
-                    <input type="checkbox" th:field="*{enable}" required minlength="2" maxlength="40"/>
+                    <input type="checkbox" th:field="*{enable}" minlength="2" maxlength="40"/>
                 </div>
             </div>
 
@@ -176,16 +178,23 @@
     function checkEmailUnique(form) {
         url="[[@{/users/check_email}]]";
         userEmail = $("#email").val();
+        console.log(email + ' email test');
+        userId = $("#userId").val();
+        console.log(userId + ' userId test');
         csrfValue = $("input[name='_csrf']").val();
-        params = {email: userEmail, _csrf: csrfValue};
+        params = {userId: userId, email: userEmail, _csrf: csrfValue};
 
         $.post(url, params, function(response){
             if(response == "OK") {
                 form.submit();
             } else if(response == "Duplicated"){
+            console.log(response);
                 showModalDialog("Warning", "Another user using email address " + userEmail);
             } else{
                 showModalDialog("Warning", "Unknown response from server");
+                }
+        }).fail(function(){
+        showModalDialog("Error", "Could not connect to the server");
         });
         return false;
     }

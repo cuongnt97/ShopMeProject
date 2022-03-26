@@ -39,9 +39,31 @@ public class UserController {
 
     @PostMapping("/users/save")
     public String saveUser(User user, RedirectAttributes redirectAttributes){
-        service.createUser(user);
-        redirectAttributes.addFlashAttribute("message", "The user has been added successfully.");
+        service.saveUser(user);
+        if (user.getUserId() == null){
+            redirectAttributes.addFlashAttribute("message", "The user has been added successfully.");
+        } else {
+            redirectAttributes.addFlashAttribute("message", "The user has been edited successfully.");
+        }
+
         return "redirect:/users";
+    }
+
+    @GetMapping("/users/edit/{id}")
+    public String editUser(@PathVariable(value = "id") Integer id, RedirectAttributes redirectAttributes, Model model) throws UserNotFoundException {
+        try{
+            User user = service.getUserById(id);
+            List<Role> listRoles = service.getListRoles();
+            model.addAttribute("user", user);
+            model.addAttribute("listRoles",listRoles);
+            model.addAttribute("pageTitle", "Edit User");
+            return "user_form";
+        } catch (Exception e){
+            redirectAttributes.addFlashAttribute("message", e.getMessage());
+            return "redirect:/users";
+        }
+
+
     }
 
 }

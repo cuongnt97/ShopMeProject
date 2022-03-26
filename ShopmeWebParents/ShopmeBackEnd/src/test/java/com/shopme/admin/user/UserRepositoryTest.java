@@ -9,9 +9,11 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.annotation.Rollback;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.in;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -90,5 +92,12 @@ public class UserRepositoryTest {
         String email = "cuong97ndc@gmail.com";
         User user = userRepository.getUserByEmail(email);
         System.out.println(user);
+    }
+
+    @Test
+    public void testCountById() {
+        Integer integer = 1;
+        Integer count = userRepository.countByUserId(integer);
+        System.out.println(count + " count test");
     }
 }
