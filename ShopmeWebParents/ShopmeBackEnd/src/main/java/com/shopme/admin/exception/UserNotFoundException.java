@@ -1,6 +1,6 @@
 package com.shopme.admin.exception;
 
-public class UserNotFoundException extends Exception{
+public class UserNotFoundException extends Exception {
     /**
      * Constructs a new exception with the specified detail message.  The
      * cause is not initialized, and may subsequently be initialized by

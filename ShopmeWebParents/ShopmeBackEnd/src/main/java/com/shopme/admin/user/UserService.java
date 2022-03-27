@@ -3,16 +3,16 @@ package com.shopme.admin.user;
 import com.shopme.admin.exception.UserNotFoundException;
 import com.shopme.common.entities.Role;
 import com.shopme.common.entities.User;
-import org.springframework.aop.scope.ScopedProxyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Objects;
 
 @Service
+@Transactional
 public class UserService {
 
     @Autowired
@@ -24,16 +24,20 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public List<User> getListUsers(){
+    public List<User> getListUsers() {
         return (List<User>) userRepo.findAll();
     }
 
-    public void saveUser(User user){
-        boolean isUpdatingUser = (user.getUserId() != null);
+    public List<Role> getListRoles() {
+        return (List<Role>) roleRepo.findAll();
+    }
 
-        if (isUpdatingUser){
-            User existingUser = userRepo.findById(user.getUserId()).get();
-            if(user.getPassword().isEmpty()){
+    public User saveUser(User user) {
+        boolean isUpdatingUser = (user.getRecid() != null);
+
+        if (isUpdatingUser) {
+            User existingUser = userRepo.findById(user.getRecid()).get();
+            if (user.getPassword().isEmpty()) {
                 user.setPassword(existingUser.getPassword());
             } else {
                 endcodePass(user);
@@ -41,39 +45,31 @@ public class UserService {
         } else {
             endcodePass(user);
         }
-        userRepo.save(user);
+
+        return userRepo.save(user);
     }
 
-    public List<Role> getListRoles() {
-        return (List<Role>) roleRepo.findAll();
-    }
-
-    private void endcodePass(User user){
+    private void endcodePass(User user) {
         String encodedPass = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPass);
     }
 
-    public boolean isEmailUnique(Integer userId, String email){
-        System.out.println("UserService57 " + userId);
-        System.out.println("UserService58 " + email);
+    public boolean isEmailUnique(Integer recid, String email) {
+        //System.out.println("UserService57 " + userId);
+        //System.out.println("UserService58 " + email);
         User userByEmail = userRepo.getUserByEmail(email);
-        System.out.println("UserService59 " +userByEmail.getUserId());
-        if(userByEmail == null) {
+        //System.out.println("UserService59 " + userByEmail.getUserId());
+        if (userByEmail == null) {
             return true;
         }
 
-        boolean isCreatingNew = (userId == null);
+        boolean isCreatingNew = (recid == null);
 
         if (isCreatingNew) {
-            if (userByEmail != null) {
-                return false;
-            }
+            return userByEmail == null;
         } else {
-            if (userByEmail.getUserId() != userId) {
-                return false;
-            }
+            return userByEmail.getRecid() == recid;
         }
-        return true;
     }
 
     public User getUserById(Integer id) throws UserNotFoundException {
@@ -85,12 +81,17 @@ public class UserService {
 
     }
 
-    public void deleteUser(Integer userId) throws UserNotFoundException {
-        Integer count = userRepo.countByUserId(userId);
-        if (count == null || count == 0){
-            throw new UserNotFoundException("Could not find any user with Id: " + userId);
+    public void deleteUser(Integer recid) throws UserNotFoundException {
+        Integer count = userRepo.countByRecid(recid);
+        if (count == null || count == 0) {
+            throw new UserNotFoundException("Could not find any user with ID: " + recid);
         }
-        userRepo.deleteById(userId);
+        userRepo.deleteById(recid);
     }
+
+    public void updateEnableStatusUser(Integer recid, boolean status) {
+        userRepo.updateEnableStatus(recid, status);
+    }
+
 
 }

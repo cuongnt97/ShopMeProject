@@ -9,14 +9,9 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.annotation.Rollback;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import java.util.Optional;
-
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.assertj.core.api.AssertionsForClassTypes.in;
-
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@Rollback(value = false)
 public class UserRepositoryTest {
     @Autowired
     private UserRepository userRepository;
@@ -25,7 +20,7 @@ public class UserRepositoryTest {
     private TestEntityManager entityManager;
 
     @Test
-    public void testCreateUser(){
+    public void testCreateUser() {
         Role roleAdmin = entityManager.find(Role.class, 1);
         User user = new User();
         user.setEmail("cuong97ndc@gmail.com");
@@ -36,8 +31,9 @@ public class UserRepositoryTest {
 
         userRepository.save(user);
     }
+
     @Test
-    public void testCreateUserTwoRoles(){
+    public void testCreateUserTwoRoles() {
         Role roleAdmin = new Role(1);
         Role roleEditor = new Role(3);
         User user = new User();
@@ -72,7 +68,7 @@ public class UserRepositoryTest {
     }
 
     @Test
-    public void testUpdateUserRole(){
+    public void testUpdateUserRole() {
         User user = userRepository.findById(2).get();
         Role roleEditor = new Role(3);
         Role roleShipper = new Role(4);
@@ -88,7 +84,7 @@ public class UserRepositoryTest {
     }
 
     @Test
-    public void getUserByEmail(){
+    public void getUserByEmail() {
         String email = "cuong97ndc@gmail.com";
         User user = userRepository.getUserByEmail(email);
         System.out.println(user);
@@ -97,7 +93,15 @@ public class UserRepositoryTest {
     @Test
     public void testCountById() {
         Integer integer = 1;
-        Integer count = userRepository.countByUserId(integer);
+        Integer count = userRepository.countByRecid(integer);
         System.out.println(count + " count test");
+    }
+
+    @Test
+    public void testUpdateUserStatus() {
+        Integer id = 2;
+        boolean enable = true;
+        //boolean enable= false;
+        userRepository.updateEnableStatus(id, enable);
     }
 }

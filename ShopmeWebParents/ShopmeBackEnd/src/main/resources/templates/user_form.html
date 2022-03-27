@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scaled=1.0">
+    <meta charset="UTF-8" content="text/html" http-equiv="Content-Type">
+    <meta content="width=device-width, initial-scale=1.0, minimum-scaled=1.0" name="viewport">
 
     <title>Manage User - [[${pageTitle}]]</title>
 
-    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
-    <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
-    <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" type="text/css"/>
+    <script th:src="@{/webjars/jquery/jquery.min.js}" type="text/javascript"></script>
+    <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}" type="text/javascript"></script>
 </head>
 <body>
 <div class="container-fluid">
@@ -19,7 +19,7 @@
                 <img th:src="@{/images/ShopmeAdminSmall.png}">
             </a>
 
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#topNavbar">
+            <button class="navbar-toggler" data-target="#topNavbar" data-toggle="collapse" type="button">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
@@ -79,23 +79,23 @@
         <h2>Manage Users | [[${pageTitle}]]</h2>
     </div>
 
-    <form th:action="@{/users/save}" method="post" style="max-width:700px; margin:0 auto" th:object="${user}"
-          onsubmit="return checkEmailUnique(this);">
-        <input type="hidden" th:field="*{userId}">
+    <form method="post" onsubmit="return checkEmailUnique(this);" style="max-width:700px; margin:0 auto" th:action="@{/users/save}"
+          th:object="${user}" enctype="multipart/form-data">
+        <input th:field="*{recid}" type="hidden">
         <div class="border border-secondary rounded p-3">
             <div class="form-group row">
                 <label class="col-sm-4 col-form-label">Email:</label>
                 <div class="col-sm-8">
-                    <input type="email" class="form-control" th:field="*{email}" required minlength="8"
-                           maxlength="128"/>
+                    <input class="form-control" maxlength="128" minlength="8" required th:field="*{email}"
+                           type="email"/>
                 </div>
             </div>
 
             <div class="form-group row">
                 <label class="col-sm-4 col-form-label">First Name</label>
                 <div class="col-sm-8">
-                    <input type="text" class="form-control" th:field="*{firstName}" required minlength="2"
-                           maxlength="40"/>
+                    <input class="form-control" maxlength="40" minlength="2" required th:field="*{firstName}"
+                           type="text"/>
                 </div>
             </div>
 
@@ -103,18 +103,20 @@
             <div class="form-group row">
                 <label class="col-sm-4 col-form-label">Last Name</label>
                 <div class="col-sm-8">
-                    <input type="text" class="form-control" th:field="*{lastName}" required minlength="2"
-                           maxlength="40"/>
+                    <input class="form-control" maxlength="40" minlength="2" required th:field="*{lastName}"
+                           type="text"/>
                 </div>
             </div>
 
             <div class="form-group row">
                 <label class="col-sm-4 col-form-label">Password</label>
                 <div class="col-sm-8">
-                    <input th:if="${user.userId == null}" type="password" class="form-control" th:field="*{password}" required minlength="8"
-                           maxlength="20"/>
-                    <input th:if="${user.userId != null}" type="password" class="form-control" th:field="*{password}" minlength="8"
-                           maxlength="20"/>
+                    <input class="form-control" maxlength="20" minlength="8" required
+                           th:field="*{password}" th:if="${user.recid== null}"
+                           type="password"/>
+                    <input class="form-control" maxlength="20" minlength="8" th:field="*{password}"
+                           th:if="${user.recid != null}"
+                           type="password"/>
                 </div>
             </div>
 
@@ -122,10 +124,10 @@
                 <label class="col-sm-4 col-form-label">Role</label>
                 <div class="col-sm-8">
                     <th:block th:each="role: ${listRoles}">
-                        <input type="checkbox"
+                        <input class="m-2"
                                th:field="*{roles}"
                                th:text="${role.name}"
-                               th:value="${role.roleId}" class="m-2"
+                               th:value="${role.roleId}" type="checkbox"
                         /> - <small>[[${role.description}]]</small><br/>
                     </th:block>
                 </div>
@@ -134,14 +136,25 @@
             <div class="form-group row">
                 <label class="col-sm-4 col-form-label">Enable</label>
                 <div class="col-sm-8">
-                    <input type="checkbox" th:field="*{enable}" minlength="2" maxlength="40"/>
+                    <input maxlength="40" minlength="2" th:field="*{enable}" type="checkbox"/>
                 </div>
             </div>
 
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Photo</label>
+                <div class="col-sm-8">
+                    <input type="file" id="fileImage" name="image"
+                           class="mb-2"
+                           accept="image/jpeg, image/png"/>
+                    <img id="thumbnail" alt="Photo preview"
+                         class="img-fluid"
+                         th:src="@{/images/default-user.png}" />
+                </div>
+            </div>
 
             <div class="text-center">
-                <input type="submit" value="Save" class="btn btn-primary m-3"/>
-                <input type="button" value="Cancel" class="btn btn-secondary" id="buttonCancel"/>
+                <input class="btn btn-primary m-3" type="submit" value="Save"/>
+                <input class="btn btn-secondary" id="buttonCancel" type="button" value="Cancel"/>
             </div>
         </div>
     </form>
@@ -150,7 +163,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title" id="modalTitle">Warning</h4>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <button class="close" data-dismiss="modal" type="button">&times;</button>
                 </div>
 
                 <div class="modal-body">
@@ -158,7 +171,7 @@
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    <button class="btn btn-danger" data-dismiss="modal" type="button">Close</button>
                 </div>
             </div>
         </div>
@@ -173,16 +186,38 @@
         $("#buttonCancel").on("click", function() {
         window.location = "[[@{/users}]]";
         });
+
+        $("#fileImage").change(function(){
+            fileSize = this.files[0].size;
+
+            if(fileSize > 1048576){
+                this.setCustomValidity("Image must be less than 1MB.");
+                this.reportValidity();
+            } else{
+                this.setCustomValidity("");
+                showImageThumbnail(this);
+            }
+
+        });
     });
+
+    function showImageThumbnail(fileInput) {
+        var file = fileInput.files[0];
+        var reader = new FileReader();
+        reader.onload = function(e){
+            $("#thumbnail").attr("src", e.target.result);
+        };
+        reader.readAsDataURL(file);
+    };
 
     function checkEmailUnique(form) {
         url="[[@{/users/check_email}]]";
         userEmail = $("#email").val();
         console.log(email + ' email test');
-        userId = $("#userId").val();
-        console.log(userId + ' userId test');
+        recid = $("#recid").val();
+        console.log(recid + ' recid test');
         csrfValue = $("input[name='_csrf']").val();
-        params = {userId: userId, email: userEmail, _csrf: csrfValue};
+        params = {recid: recid, email: userEmail, _csrf: csrfValue};
 
         $.post(url, params, function(response){
             if(response == "OK") {
@@ -204,6 +239,7 @@ function showModalDialog(title, message) {
 	$("#modalBody").text(message);
 	$("#modalDialog").modal();
 };
+
 
 
 </script>

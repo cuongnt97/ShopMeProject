@@ -4,8 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.Tables;
-import org.springframework.stereotype.Controller;
 
 import javax.persistence.*;
 
@@ -49,11 +47,8 @@ public class Role {
             return false;
         Role other = (Role) obj;
         if (roleId == null) {
-            if (other.roleId != null)
-                return false;
-        } else if (!roleId.equals(other.roleId))
-            return false;
-        return true;
+            return other.roleId == null;
+        } else return roleId.equals(other.roleId);
     }
 
     @Override
