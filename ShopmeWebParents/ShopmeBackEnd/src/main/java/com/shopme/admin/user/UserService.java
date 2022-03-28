@@ -55,10 +55,7 @@ public class UserService {
     }
 
     public boolean isEmailUnique(Integer recid, String email) {
-        //System.out.println("UserService57 " + userId);
-        //System.out.println("UserService58 " + email);
         User userByEmail = userRepo.getUserByEmail(email);
-        //System.out.println("UserService59 " + userByEmail.getUserId());
         if (userByEmail == null) {
             return true;
         }

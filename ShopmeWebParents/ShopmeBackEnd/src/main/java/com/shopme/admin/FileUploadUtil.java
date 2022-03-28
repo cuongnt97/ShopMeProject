@@ -2,6 +2,7 @@ package com.shopme.admin;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -24,6 +25,25 @@ public class FileUploadUtil {
         }catch (IOException e) {
             throw new IOException("Could not save file " + fileName, e);
         }
-
     }
+
+    public static void cleanDirectory(String dir) {
+        Path dirPath = Paths.get(dir);
+
+        try {
+            Files.list(dirPath).forEach(file ->{
+                if (!Files.isDirectory(file)) {
+                    try {
+                        Files.delete(file);
+                    } catch (IOException e){
+                        System.out.println("Could not delete file " + file);
+                    }
+                }
+            });
+        } catch (IOException e) {
+            System.out.println("Could not list directory " + dirPath);
+        }
+    }
+
+
 }

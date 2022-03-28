@@ -142,13 +142,14 @@
 
             <div class="form-group row">
                 <label class="col-sm-4 col-form-label">Photo</label>
-                <div class="col-sm-8">
+                <div class="col-sm-8 ">
+                    <input type="hidden" th:field="*{photo}">
                     <input type="file" id="fileImage" name="image"
                            class="mb-2"
                            accept="image/jpeg, image/png"/>
                     <img id="thumbnail" alt="Photo preview"
-                         class="img-fluid"
-                         th:src="@{/images/default-user.png}" />
+                         class="img-fluid float-right"
+                         th:src="@{${user.photoImagePath}}"/>
                 </div>
             </div>
 
@@ -213,11 +214,9 @@
     function checkEmailUnique(form) {
         url="[[@{/users/check_email}]]";
         userEmail = $("#email").val();
-        console.log(email + ' email test');
         recid = $("#recid").val();
-        console.log(recid + ' recid test');
         csrfValue = $("input[name='_csrf']").val();
-        params = {recid: recid, email: userEmail, _csrf: csrfValue};
+        params = {recid: Number(recid), email: userEmail, _csrf: csrfValue};
 
         $.post(url, params, function(response){
             if(response == "OK") {

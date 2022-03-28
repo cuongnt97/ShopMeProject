@@ -26,10 +26,10 @@ public class User {
 
     @Column(name = "password", nullable = false)
     private String password;
-    @Column(name = "firstName", length = 64, nullable = false)
+    @Column(name = "first_name", length = 64, nullable = false)
     private String firstName;
 
-    @Column(name = "lastName", length = 64, nullable = false)
+    @Column(name = "last_name", length = 64, nullable = false)
     private String lastName;
 
     @Column(length = 64)
@@ -40,7 +40,7 @@ public class User {
 
     @ManyToMany
     @JoinTable(
-            name = "user_roles",
+            name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
@@ -67,10 +67,8 @@ public class User {
     @Transient
     public String getPhotoImagePath(){
         if (recid == null || photo == null) {
-            System.out.println("User70");
             return "/images/default-user.png";
         }
-        System.out.println("User73: " + recid);
         return ("/user-photos/" + this.recid + "/" + this.photo);
     }
 }

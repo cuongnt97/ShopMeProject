@@ -48,16 +48,19 @@ public class UserController {
             , RedirectAttributes redirectAttributes
             , @RequestParam("image")MultipartFile multipartFile) throws IOException {
         boolean isCreatingUser = (user.getRecid() == null ||user.getRecid() == 0);
-        //System.out.println(user.getFullName());
-        //System.out.println(multipartFile.getOriginalFilename());
         if (!multipartFile.isEmpty()){
             String filename = StringUtils.cleanPath(multipartFile.getOriginalFilename());
             user.setPhoto(filename);
             User savedUser = service.saveUser(user);
             String uploadDir = "user-photos/" + savedUser.getRecid();
+            FileUploadUtil.cleanDirectory(uploadDir);
             FileUploadUtil.saveFile(uploadDir, filename, multipartFile);
 
+        } else {
+            if (user.getPhoto().isEmpty()) user.setPhoto(null);
+            service.saveUser(user);
         }
+
         if (isCreatingUser) {
             redirectAttributes.addFlashAttribute("message", "The user has been added successfully.");
         } else {
