@@ -4,12 +4,18 @@ import com.shopme.admin.exception.UserNotFoundException;
 import com.shopme.common.entities.Role;
 import com.shopme.common.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.NoSuchElementException;
+
+import static com.shopme.common.Constants.USERS_PER_PAGE;
+
 
 @Service
 @Transactional
@@ -25,7 +31,13 @@ public class UserService {
     private PasswordEncoder passwordEncoder;
 
     public List<User> getListUsers() {
+
         return (List<User>) userRepo.findAll();
+    }
+
+    public Page<User> listByPage(int pageNum) {
+        Pageable pageable = PageRequest.of(pageNum - 1, USERS_PER_PAGE);
+        return userRepo.findAll(pageable);
     }
 
     public List<Role> getListRoles() {
@@ -89,6 +101,8 @@ public class UserService {
     public void updateEnableStatusUser(Integer recid, boolean status) {
         userRepo.updateEnableStatus(recid, status);
     }
+
+
 
 
 }

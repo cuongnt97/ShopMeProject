@@ -5,6 +5,7 @@ import com.shopme.admin.exception.UserNotFoundException;
 import com.shopme.common.entities.Role;
 import com.shopme.common.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -18,6 +19,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.io.IOException;
 import java.util.List;
 
+import static com.shopme.common.Constants.DEFAULT_PAGE_NUM;
+
 @Controller
 public class UserController {
 
@@ -25,8 +28,22 @@ public class UserController {
     private UserService service;
 
     @GetMapping("/users")
-    public String listAllUser(Model model) {
-        List<User> listUsers = service.getListUsers();
+    public String listUserFirstPage(Model model) {
+        Page<User> pageUsers = service.listByPage(DEFAULT_PAGE_NUM);
+        List<User> listUsers = pageUsers.getContent();
+        model.addAttribute("listUsers", listUsers);
+        return "list_users";
+    }
+
+    @GetMapping("users/page/{pageNum}")
+    public String listUserByPage(@PathVariable(name = "pageNum") int pageNum, Model model){
+        Page<User> pageUsers = service.listByPage(pageNum);
+        List<User> listUsers = pageUsers.getContent();
+
+        //System.out.println("PageNum " + pageNum);
+        //System.out.println("Total elements " + pageUsers.getTotalElements());
+        //System.out.println("TotalPage " + pageUsers.getTotalPages());
+
         model.addAttribute("listUsers", listUsers);
         return "list_users";
     }
