@@ -6,6 +6,7 @@ import com.shopme.common.entities.Role;
 import com.shopme.common.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -19,7 +20,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.io.IOException;
 import java.util.List;
 
-import static com.shopme.common.Constants.DEFAULT_PAGE_NUM;
+import static com.shopme.common.Constants.*;
 
 @Controller
 public class UserController {
@@ -29,21 +30,33 @@ public class UserController {
 
     @GetMapping("/users")
     public String listUserFirstPage(Model model) {
-        Page<User> pageUsers = service.listByPage(DEFAULT_PAGE_NUM);
-        List<User> listUsers = pageUsers.getContent();
-        model.addAttribute("listUsers", listUsers);
-        return "list_users";
+        return listUserByPage(DEFAULT_PAGE_NUM, model, "recid", "asc");
     }
 
     @GetMapping("users/page/{pageNum}")
-    public String listUserByPage(@PathVariable(name = "pageNum") int pageNum, Model model){
-        Page<User> pageUsers = service.listByPage(pageNum);
+    public String listUserByPage(@PathVariable(name = "pageNum") int pageNum
+            , Model model
+            , @Param("sortField") String sortField
+            , @Param("sortDir") String sortDir){
+
+        System.out.println("Sort Field " + sortField);
+        System.out.println("Sort Order " + sortDir);
+
+        Page<User> pageUsers = service.listByPage(pageNum, sortField, sortDir);
         List<User> listUsers = pageUsers.getContent();
 
-        //System.out.println("PageNum " + pageNum);
-        //System.out.println("Total elements " + pageUsers.getTotalElements());
-        //System.out.println("TotalPage " + pageUsers.getTotalPages());
+        long startCount = (pageNum - 1) * USERS_PER_PAGE + 1;
+        long endCount = startCount + USERS_PER_PAGE - 1;
 
+        if (endCount > pageUsers.getTotalElements()){
+            endCount = pageUsers.getTotalElements();
+        }
+        model.addAttribute("currentPage", pageNum);
+        model.addAttribute("lastPage",(int) pageUsers.getTotalPages());
+        model.addAttribute("startCount", startCount);
+        model.addAttribute("endCount", endCount);
+        model.addAttribute("totalItems", pageUsers
+                .getTotalElements());
         model.addAttribute("listUsers", listUsers);
         return "list_users";
     }

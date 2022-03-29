@@ -109,11 +109,11 @@
                 <td>[[${user.lastName}]]</td>
                 <td>[[${user.roles}]]</td>
                 <td class="text-center">
-                    <a class="icon-green fa-solid fa-circle-check"
+                    <a class="icon-green fa-solid fa-circle-check fa-2x"
                        th:href="@{'/users/'+${user.recid}+'/enable/false'}"
                        th:if="${user.enable == true}">
                     </a>
-                    <a class="icon-grey fa-solid fa-circle"
+                    <a class="icon-grey fa-solid fa-circle fa-2x"
                        th:href="@{'/users/'+${user.recid}+'/enable/true'}"
                        th:if="${user.enable == false}">
                     </a>
@@ -131,6 +131,32 @@
             </tbody>
         </table>
     </div>
+
+    <!--Paging-->
+    <div class="text-center m-1" th:if="${totalItems > 0}">
+        <span>Showing users # [[${startCount}]] to [[${endCount}]] of [[${totalItems}]]</span>
+    </div>
+
+    <div class="text-center m-1" th:unless="${totalItems > 0}">
+        <span>Not user found</span>
+    </div>
+
+    <div >
+        <nav>
+            <ul class="pagination justify-content-center" >
+                <li th:class="${currentPage == 1 ? 'page-item disabled' : 'page-item'}"><a class="page-link" th:href="@{/users}">First</a></li>
+
+                <li th:class="${currentPage == 1 ? 'page-item disabled' : 'page-item'}"><a class="page-link" th:href="@{'/users/page/' + ${currentPage-1} }">Previous</a></li>
+                <li th:class="${currentPage == i ? 'page-item active' : 'page-item'}"
+                    th:each="i : ${#numbers.sequence(1, lastPage)}">
+                    <a class="page-link" th:href="@{'/users/page/' + ${i} }">[[${i}]]</a></li>
+                <li th:class="${currentPage == lastPage ? 'page-item disabled' : 'page-item'}"><a class="page-link" th:href="@{'/users/page/' + ${currentPage+1} }">Next</a></li>
+                <li th:class="${currentPage == lastPage ? 'page-item disabled' : 'page-item'}"><a class="page-link" th:href="@{'/users/page/' + ${lastPage} }">Last</a></li>
+
+            </ul>
+        </nav>
+    </div>
+
     <div class="modal fade text-center" id="confirmModal">
         <div class="modal-dialog">
             <div class="modal-content">
