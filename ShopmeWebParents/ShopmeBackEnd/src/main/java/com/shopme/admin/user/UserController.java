@@ -30,7 +30,7 @@ public class UserController {
 
     @GetMapping("/users")
     public String listUserFirstPage(Model model) {
-        return listUserByPage(DEFAULT_PAGE_NUM, model, "firstName", "asc");
+        return listUserByPage(DEFAULT_PAGE_NUM, model, "recid", "asc");
     }
 
     @GetMapping("users/page/{pageNum}")
@@ -105,7 +105,7 @@ public class UserController {
     }
 
     @GetMapping("/users/edit/{id}")
-    public String editUser(@PathVariable(value = "id") Integer id, RedirectAttributes redirectAttributes, Model model) throws UserNotFoundException {
+    public String editUser(@PathVariable(value = "id") Integer id, RedirectAttributes redirectAttributes, Model model) {
         try {
             User user = service.getUserById(id);
             List<Role> listRoles = service.getListRoles();
@@ -122,7 +122,7 @@ public class UserController {
     }
 
     @GetMapping("/users/delete/{id}")
-    public String deleteUser(@PathVariable(value = "id") Integer id, RedirectAttributes redirectAttributes, Model model) throws UserNotFoundException {
+    public String deleteUser(@PathVariable(value = "id") Integer id, RedirectAttributes redirectAttributes) {
         try {
             service.deleteUser(id);
             redirectAttributes.addFlashAttribute("message", "Delete user successfully.");
