@@ -30,7 +30,7 @@ public class UserController {
 
     @GetMapping("/users")
     public String listUserFirstPage(Model model) {
-        return listUserByPage(DEFAULT_PAGE_NUM, model, "recid", "asc");
+        return listUserByPage(DEFAULT_PAGE_NUM, model, "firstName", "asc");
     }
 
     @GetMapping("users/page/{pageNum}")
@@ -51,6 +51,10 @@ public class UserController {
         if (endCount > pageUsers.getTotalElements()){
             endCount = pageUsers.getTotalElements();
         }
+        String reverseSortDir = sortDir.equals("asc") ? "desc" : "asc";
+        model.addAttribute("sortField",sortField);
+        model.addAttribute("sortDir", sortDir);
+        model.addAttribute("reverseSortDir", reverseSortDir);
         model.addAttribute("currentPage", pageNum);
         model.addAttribute("lastPage",(int) pageUsers.getTotalPages());
         model.addAttribute("startCount", startCount);
