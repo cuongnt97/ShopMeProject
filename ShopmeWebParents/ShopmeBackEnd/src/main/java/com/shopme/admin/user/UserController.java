@@ -1,7 +1,6 @@
 package com.shopme.admin.user;
 
 import com.shopme.admin.FileUploadUtil;
-import com.shopme.admin.exception.UserNotFoundException;
 import com.shopme.common.entities.Role;
 import com.shopme.common.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,19 +29,20 @@ public class UserController {
 
     @GetMapping("/users")
     public String listUserFirstPage(Model model) {
-        return listUserByPage(DEFAULT_PAGE_NUM, model, "recid", "asc");
+        return listUserByPage(DEFAULT_PAGE_NUM, model, "recid", "asc", null);
     }
 
     @GetMapping("users/page/{pageNum}")
     public String listUserByPage(@PathVariable(name = "pageNum") int pageNum
             , Model model
             , @Param("sortField") String sortField
-            , @Param("sortDir") String sortDir){
+            , @Param("sortDir") String sortDir
+            , @Param("keyword") String keyword){
 
         System.out.println("Sort Field " + sortField);
         System.out.println("Sort Order " + sortDir);
 
-        Page<User> pageUsers = service.listByPage(pageNum, sortField, sortDir);
+        Page<User> pageUsers = service.listByPage(pageNum, sortField, sortDir, keyword);
         List<User> listUsers = pageUsers.getContent();
 
         long startCount = (pageNum - 1) * USERS_PER_PAGE + 1;
@@ -52,16 +52,24 @@ public class UserController {
             endCount = pageUsers.getTotalElements();
         }
         String reverseSortDir = sortDir.equals("asc") ? "desc" : "asc";
+
+        //Parameters
+        model.addAttribute("keyword", keyword);
         model.addAttribute("sortField",sortField);
         model.addAttribute("sortDir", sortDir);
         model.addAttribute("reverseSortDir", reverseSortDir);
+
+        //Pageable
         model.addAttribute("currentPage", pageNum);
         model.addAttribute("lastPage",(int) pageUsers.getTotalPages());
         model.addAttribute("startCount", startCount);
         model.addAttribute("endCount", endCount);
         model.addAttribute("totalItems", pageUsers
                 .getTotalElements());
+
+        //User list
         model.addAttribute("listUsers", listUsers);
+
         return "list_users";
     }
 

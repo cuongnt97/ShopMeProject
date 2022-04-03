@@ -84,22 +84,53 @@
     <div class="alert alert-success text-center" th:if="${message != null}">
         [[${message}]]
     </div>
+
+    <div>
+        <form th:action="@{/users/page/1}" class="form-inline">
+            <input type="hidden" name="sortField" th:value="${sortField}">
+            <input type="hidden" name="sortDir" th:value="${sortDir}">
+            Search&nbsp;
+            <input type="search" name="keyword" th:value="${keyword}" class="form-control m-3">
+            &nbsp;&nbsp;
+            <input type="submit" value="Search" class="btn btn-primary">
+            &nbsp;&nbsp;
+            <input type="button" value="Clear" class="btn btn-secondary" onclick="clearSearch()">
+        </form>
+    </div>
+
     <div>
         <table class="table table-bordered table-striped table-hoover table-responsive-xL">
             <thead class="thead-dark">
             <tr>
                 <th>User ID</th>
                 <th>Photo</th>
-                <th>Email</th>
+                <th>
+                    <a th:if="${sortField != 'email'}" class="text-white"
+                       th:href="@{'/users/page/' + ${currentPage} + '?sortField=email&sortDir=' + ${sortDir} + '&keyword=' + ${keyword != null ? keyword : '' } }">Email</a>
+                    <a th:if="${sortField == 'email'}" class="text-white"
+                       th:href="@{'/users/page/' + ${currentPage} + '?sortField=email&sortDir=' + ${reverseSortDir}  +  '&keyword=' + ${keyword != null ? keyword : '' } }">Email</a>
+
+                    <span th:if="${sortField == 'email'}" th:class="${sortDir == 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}"></span>
+                </th>
+
                 <th>
                     <a th:if="${sortField != 'firstName'}" class="text-white"
-                    th:href="@{'/users/page/' + ${currentPage} + '?sortField=firstName&sortDir=' + ${sortDir} }">First Name</a>
+                    th:href="@{'/users/page/' + ${currentPage} + '?sortField=firstName&sortDir=' + ${sortDir} + '&keyword=' + ${keyword != null ? keyword : '' } }">First Name</a>
                     <a th:if="${sortField == 'firstName'}" class="text-white"
-                       th:href="@{'/users/page/' + ${currentPage} + '?sortField=firstName&sortDir=' + ${reverseSortDir} }">First Name</a>
+                       th:href="@{'/users/page/' + ${currentPage} + '?sortField=firstName&sortDir=' + ${reverseSortDir}  +  '&keyword=' + ${keyword != null ? keyword : '' } }">First Name</a>
 
                     <span th:if="${sortField == 'firstName'}" th:class="${sortDir == 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}"></span>
                 </th>
-                <th>Last Name</th>
+
+
+                <th>
+                    <a th:if="${sortField != 'lastName'}" class="text-white"
+                       th:href="@{'/users/page/' + ${currentPage} + '?sortField=lastName&sortDir=' + ${sortDir} + '&keyword=' + ${keyword != null ? keyword : '' } }">Last Name</a>
+                    <a th:if="${sortField == 'lastName'}" class="text-white"
+                       th:href="@{'/users/page/' + ${currentPage} + '?sortField=lastName&sortDir=' + ${reverseSortDir}  +  '&keyword=' + ${keyword != null ? keyword : '' } }">Last Name</a>
+
+                    <span th:if="${sortField == 'lastName'}" th:class="${sortDir == 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}"></span>
+                </th>
                 <th>Role</th>
                 <th>Enable</th>
                 <th></th>
@@ -148,17 +179,26 @@
         <span>Not user found</span>
     </div>
 
-    <div >
+    <div th:if="${lastPage > 1}">
         <nav>
             <ul class="pagination justify-content-center" >
-                <li th:class="${currentPage == 1 ? 'page-item disabled' : 'page-item'}"><a class="page-link" th:href="@{'/users/page/1?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} }">First</a></li>
+                <li th:class="${currentPage == 1 ? 'page-item disabled' : 'page-item'}">
+                    <a class="page-link" th:href="@{'/users/page/1?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + '&keyword=' + ${keyword != null ? keyword : '' }  }">First</a>
+                </li>
 
-                <li th:class="${currentPage == 1 ? 'page-item disabled' : 'page-item'}"><a class="page-link" th:href="@{'/users/page/' + ${currentPage-1} +'?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} }">Previous</a></li>
+                <li th:class="${currentPage == 1 ? 'page-item disabled' : 'page-item'}">
+                    <a class="page-link" th:href="@{'/users/page/' + ${currentPage-1} +'?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + '&keyword=' + ${keyword != null ? keyword : '' } }">Previous</a>
+                </li>
                 <li th:class="${currentPage == i ? 'page-item active' : 'page-item'}"
                     th:each="i : ${#numbers.sequence(1, lastPage)}">
-                    <a class="page-link" th:href="@{'/users/page/' + ${i}  +'?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} }">[[${i}]]</a></li>
-                <li th:class="${currentPage == lastPage ? 'page-item disabled' : 'page-item'}"><a class="page-link" th:href="@{'/users/page/' + ${currentPage+1} +'?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}  }">Next</a></li>
-                <li th:class="${currentPage == lastPage ? 'page-item disabled' : 'page-item'}"><a class="page-link" th:href="@{'/users/page/' + ${lastPage} +'?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} }">Last</a></li>
+                    <a class="page-link" th:href="@{'/users/page/' + ${i}  +'?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + '&keyword=' + ${keyword != null ? keyword : '' } }">[[${i}]]</a>
+                </li>
+                <li th:class="${currentPage == lastPage ? 'page-item disabled' : 'page-item'}">
+                    <a class="page-link" th:href="@{'/users/page/' + ${currentPage+1} +'?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + '&keyword=' + ${keyword != null ? keyword : '' }  }">Next</a>
+                </li>
+                <li th:class="${currentPage == lastPage ? 'page-item disabled' : 'page-item'}">
+                    <a class="page-link" th:href="@{'/users/page/' + ${lastPage} +'?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + '&keyword=' + ${keyword != null ? keyword : '' } }">Last</a>
+                </li>
 
             </ul>
         </nav>
@@ -199,6 +239,10 @@
             $("#confirmModal").modal();
         });
     });
+
+    function clearSearch() {
+        window.location = "[[@{/users}]]";
+    };
 
 </script>
 </body>

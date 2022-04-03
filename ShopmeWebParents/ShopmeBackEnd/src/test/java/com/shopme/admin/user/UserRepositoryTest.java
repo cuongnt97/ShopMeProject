@@ -122,4 +122,17 @@ public class UserRepositoryTest {
             System.out.println(user);
         });
     }
+
+    @Test
+    public void testSearchUser(){
+        int pageNum = 0;
+        int pageSize = 4;
+        String keyword = "nam ha minh";
+        Pageable pageable = PageRequest.of(pageNum, pageSize);
+        Page<User> page = userRepository.findAll(keyword, pageable);
+        List<User> listUsers = page.getContent();
+        listUsers.forEach(user -> {
+            System.out.println(user);
+        });
+    }
 }
