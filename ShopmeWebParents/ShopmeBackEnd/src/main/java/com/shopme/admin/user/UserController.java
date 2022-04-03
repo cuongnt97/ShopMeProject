@@ -104,12 +104,19 @@ public class UserController {
         }
 
         if (isCreatingUser) {
-            redirectAttributes.addFlashAttribute("message", "The user has been added successfully.");
+            redirectAttributes.addFlashAttribute("message"
+                    , "The user has been added successfully.");
         } else {
-            redirectAttributes.addFlashAttribute("message", "The user has been edited successfully.");
+            redirectAttributes.addFlashAttribute("message"
+                    , "The user has been edited successfully.");
         }
 
-        return "redirect:/users";
+        return getRedirectURLSavedUser(user);
+    }
+
+    private String getRedirectURLSavedUser(User user) {
+        String firstPartOfEmail = user.getEmail().split("@")[0];
+        return "redirect:/users/page/1?sortField=recid&sortDir=asc&keyword=" + firstPartOfEmail;
     }
 
     @GetMapping("/users/edit/{id}")
