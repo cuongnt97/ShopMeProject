@@ -104,14 +104,8 @@
             <tr>
                 <th>User ID</th>
                 <th>Photo</th>
-                <th>
-                    <a th:if="${sortField != 'email'}" class="text-white"
-                       th:href="@{'/users/page/' + ${currentPage} + '?sortField=email&sortDir=' + ${sortDir} + '&keyword=' + ${keyword != null ? keyword : '' } }">Email</a>
-                    <a th:if="${sortField == 'email'}" class="text-white"
-                       th:href="@{'/users/page/' + ${currentPage} + '?sortField=email&sortDir=' + ${reverseSortDir}  +  '&keyword=' + ${keyword != null ? keyword : '' } }">Email</a>
 
-                    <span th:if="${sortField == 'email'}" th:class="${sortDir == 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}"></span>
-                </th>
+                <th th:replace="fragments :: column_link('email', 'Email')" />
 
                 <th>
                     <a th:if="${sortField != 'firstName'}" class="text-white"
