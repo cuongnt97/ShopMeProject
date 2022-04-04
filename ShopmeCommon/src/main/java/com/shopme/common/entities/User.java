@@ -50,6 +50,7 @@ public class User {
         this.roles.add(role);
     }
 
+    @Transient
     public String getFullName() {
         return firstName + " " + lastName;
     }
