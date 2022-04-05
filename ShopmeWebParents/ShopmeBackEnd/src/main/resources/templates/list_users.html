@@ -80,6 +80,11 @@
     <div>
         <h2>Manage Users</h2>
         <a class="fa-solid fa-user-plus fa-2x icon-grey" th:href="@{/users/new}" title="Create New User"></a>
+        &nbsp;|&nbsp;
+        <a class="fa-solid fa-file-csv fa-2x icon-grey" th:href="@{/users/export/csv}" title="Export to CSV file"></a>
+        &nbsp;|&nbsp;
+        <a class="fa-solid fa-file-excel fa-2x icon-grey" th:href="@{/users/export/excel}" title="Export to Excel file"></a>
+
     </div>
     <div>&nbsp;</div>
     <div class="alert alert-success text-center" th:if="${message != null}">

@@ -1,6 +1,8 @@
 package com.shopme.admin.user;
 
 import com.shopme.admin.FileUploadUtil;
+import com.shopme.admin.user.export.UserCSVExporter;
+import com.shopme.admin.user.export.UserExcelExporter;
 import com.shopme.common.entities.Role;
 import com.shopme.common.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
@@ -157,6 +160,21 @@ public class UserController {
         redirectAttributes.addFlashAttribute("message", "User has been " + status);
 
         return "redirect:/users";
+    }
+
+    @GetMapping("/users/export/csv")
+    public void exportToCSV(HttpServletResponse reponse) throws IOException {
+        List<User> listUsers = service.getListUsers();
+        UserCSVExporter exporter = new UserCSVExporter();
+        exporter.exportCSV(listUsers, reponse);
+    }
+
+    @GetMapping("/users/export/excel")
+    public void exportToExcel(HttpServletResponse response) throws IOException{
+        List<User> listUsers = service.getListUsers();
+        UserExcelExporter exporter = new UserExcelExporter();
+        exporter.exportExcel(listUsers, response);
+
     }
 
 }
