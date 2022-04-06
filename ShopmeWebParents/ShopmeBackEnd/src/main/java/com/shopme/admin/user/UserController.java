@@ -3,6 +3,7 @@ package com.shopme.admin.user;
 import com.shopme.admin.FileUploadUtil;
 import com.shopme.admin.user.export.UserCSVExporter;
 import com.shopme.admin.user.export.UserExcelExporter;
+import com.shopme.admin.user.export.UserPDFExporter;
 import com.shopme.common.entities.Role;
 import com.shopme.common.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -175,6 +176,13 @@ public class UserController {
         UserExcelExporter exporter = new UserExcelExporter();
         exporter.exportExcel(listUsers, response);
 
+    }
+
+    @GetMapping("/users/export/pdf")
+    public void exportToPDF(HttpServletResponse response) throws IOException {
+        List<User> listUsers = service.getListUsers();
+        UserPDFExporter exporter = new UserPDFExporter();
+        exporter.exportPDF(listUsers, response);
     }
 
 }

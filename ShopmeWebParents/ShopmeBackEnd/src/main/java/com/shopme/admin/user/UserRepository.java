@@ -16,9 +16,11 @@ public interface UserRepository extends PagingAndSortingRepository<User, Integer
 
     Integer countByRecid(Integer recid);
 
+    //Query modify findAll() method
     @Query("SELECT u FROM User u WHERE CONCAT(u.email, ' ', u.firstName, ' ', u.lastName) LIKE %?1%")
     Page<User> findAll(String keyword, Pageable pageable);
 
+    //Query update user to database
     @Query("UPDATE User u SET u.enable = ?2 WHERE u.recid = ?1")
     @Modifying
     void updateEnableStatus(Integer recid, boolean enable);
