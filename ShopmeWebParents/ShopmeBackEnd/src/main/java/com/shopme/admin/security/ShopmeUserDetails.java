@@ -13,9 +13,8 @@ import com.shopme.common.entities.Role;
 import com.shopme.common.entities.User;
 
 public class ShopmeUserDetails implements UserDetails {
-    private static final long serialVersionUID = 1L;
-    private User user;
 
+    private User user;
 
     public ShopmeUserDetails(User user) {
         this.user = user;
