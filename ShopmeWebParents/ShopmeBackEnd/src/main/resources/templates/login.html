@@ -9,16 +9,37 @@
 
 </head>
 <body>
-    <div class="container-fluid">
-        <div>
-            <h1>Custom Login Page</h1>
-        </div>
-
-
-        <div class="text-center">
-            <p><strong><em>Shopme Control Panel - Copyright &copy; Shopme</em></strong></p>
-        </div>
+<div class="container-fluid text-center">
+    <div>
+        <img th:src="@{/images/ShopmeAdminBig.png}">
     </div>
+    <form th:action="@{/login}" method="post" style="max-width: 350px; margin: 0 auto">
+
+        <div th:if="${param.error}">
+            <p class="text-danger">[[${session.SPRING_SECURITY_LAST_EXCEPTION.message}]]</p>
+        </div>
+
+        <div class="border border-secondary rounded p-3" >
+            <p>Access to Shopme Control Panel</p>
+            <p>
+                <input type="email" name="email" class="form-control" required placeholder="Email" >
+            </p>
+            <p>
+                <input type="password" name="password" class="form-control" required placeholder="Password" >
+            </p>
+            <p>
+                <input type="submit" value="Login" class="btn btn-primary" />
+            </p>
+        </div>
+
+
+    </form>
+
+
+    <div>
+        <p><strong><em>Shopme Control Panel - Copyright &copy; Shopme</em></strong></p>
+    </div>
+</div>
 
 
 </body>
