@@ -85,7 +85,7 @@ public class UserController {
 
         model.addAttribute("listRoles", listRoles);
         model.addAttribute(user);
-        model.addAttribute("pageTitle", "Create New User");
+        model.addAttribute("pageTitle", "Create User");
         return "user_form";
     }
 

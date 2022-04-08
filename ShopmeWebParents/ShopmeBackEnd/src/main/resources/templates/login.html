@@ -1,12 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8" content="text/html" http-equiv="Content-Type">
-    <meta content="width=device-width, initial-scale=1.0, minimum-scaled=1.0" name="viewport">
-    <title>Manage User - Login</title>
-    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" type="text/css"/>
-
+<head th:replace="fragments :: page_head('Login - Shopme Admin')">
 </head>
 <body>
 <div class="container-fluid text-center">
@@ -17,6 +12,9 @@
 
         <div th:if="${param.error}">
             <p class="text-danger">[[${session.SPRING_SECURITY_LAST_EXCEPTION.message}]]</p>
+        </div>
+        <div>
+            <p th:if="${param.logout}" class="text-warning">You have been logged out</p>
         </div>
 
         <div class="border border-secondary rounded p-3" >
@@ -36,9 +34,7 @@
     </form>
 
 
-    <div>
-        <p><strong><em>Shopme Control Panel - Copyright &copy; Shopme</em></strong></p>
-    </div>
+    <div th:replace="fragments :: footer"> </div>
 </div>
 
 
