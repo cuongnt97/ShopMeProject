@@ -1,22 +1,24 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments :: page_head(${pageTitle} + ' - Shopme Admin')"></head>
+<head th:replace="fragments :: page_head('Account Details')"></head>
 <body>
 <div class="container-fluid">
-<div th:replace="navigation :: menu"></div>
+    <div th:replace="navigation :: menu"></div>
 
     <div>
-        <h2>User Management | [[${pageTitle}]]</h2>
+        <h2>Account Details</h2>
     </div>
-
-    <form method="post" onsubmit="return checkEmailUnique(this);" style="max-width:700px; margin:0 auto" th:action="@{/users/save}"
+    <div class="alert alert-success text-center" th:if="${message != null}">
+        [[${message}]]
+    </div>
+    <form th:action="@{/account/update}" method="post" style="max-width:700px; margin:0 auto"
           th:object="${user}" enctype="multipart/form-data">
         <input th:field="*{recid}" type="hidden">
         <div class="border border-secondary rounded p-3">
             <div class="form-group row">
                 <label class="col-sm-4 col-form-label">Email:</label>
                 <div class="col-sm-8">
-                    <input class="form-control" maxlength="128" minlength="8" required th:field="*{email}"
+                    <input class="form-control" maxlength="128" minlength="8" readonly th:field="${user.email}"
                            type="email"/>
                 </div>
             </div>
@@ -41,32 +43,24 @@
             <div class="form-group row">
                 <label class="col-sm-4 col-form-label">Password</label>
                 <div class="col-sm-8">
-                    <input class="form-control" maxlength="20" minlength="8" required
-                           th:field="*{password}" th:if="${user.recid== null}"
-                           type="password"/>
-                    <input class="form-control" maxlength="20" minlength="8" th:field="*{password}"
-                           th:if="${user.recid != null}"
-                           type="password"/>
+                    <input class="form-control" type="password" th:field="*{password}"
+                    placeholder="Leave blank if you don't want to change password"
+                    oninput="checkPasswordMatch(document.getElementById('confirmPassword'))"/>
                 </div>
             </div>
 
             <div class="form-group row">
-                <label class="col-sm-4 col-form-label">Role</label>
+                <label class="col-sm-4 col-form-label">Confirm Password</label>
                 <div class="col-sm-8">
-                    <th:block th:each="role: ${listRoles}">
-                        <input class="m-2"
-                               th:field="*{roles}"
-                               th:text="${role.name}"
-                               th:value="${role.roleId}" type="checkbox"
-                        /> - <small>[[${role.description}]]</small><br/>
-                    </th:block>
+                    <input class="form-control" type="password" id="confirmPassword" maxlength="20" minlength="8"
+                    oninput="checkPasswordMatch(this)"/>
                 </div>
             </div>
 
             <div class="form-group row">
-                <label class="col-sm-4 col-form-label">Enable</label>
+                <label class="col-sm-4 col-form-label">Assigned Role</label>
                 <div class="col-sm-8">
-                    <input maxlength="40" minlength="2" th:field="*{enable}" type="checkbox"/>
+                    <span readonly="readonly"><strong>[[${user.roles}]]</strong></span>
                 </div>
             </div>
 
@@ -139,35 +133,13 @@
         reader.readAsDataURL(file);
     };
 
-    function checkEmailUnique(form) {
-        url="[[@{/users/check_email}]]";
-        userEmail = $("#email").val();
-        recid = $("#recid").val();
-        csrfValue = $("input[name='_csrf']").val();
-        params = {recid: Number(recid), email: userEmail, _csrf: csrfValue};
-
-        $.post(url, params, function(response){
-            if(response == "OK") {
-                form.submit();
-            } else if(response == "Duplicated"){
-            console.log(response);
-                showModalDialog("Warning", "Another user using email address " + userEmail);
-            } else{
-                showModalDialog("Warning", "Unknown response from server");
-                }
-        }).fail(function(){
-        showModalDialog("Error", "Could not connect to the server");
-        });
-        return false;
+    function checkPasswordMatch(confirmPassword) {
+        if(confirmPassword.value != $("#password").val()) {
+            confirmPassword.setCustomValidity("Password does not match");
+        } else{
+            confirmPassword.setCustomValidity("");
+        }
     }
-
-function showModalDialog(title, message) {
-	$("#modalTitle").text(title);
-	$("#modalBody").text(message);
-	$("#modalDialog").modal();
-};
-
-
 
 </script>
 </body>

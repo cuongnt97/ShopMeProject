@@ -1,6 +1,7 @@
 package com.shopme.admin.user;
 
 import com.shopme.admin.FileUploadUtil;
+import com.shopme.admin.security.ShopmeUserDetails;
 import com.shopme.admin.user.export.UserCSVExporter;
 import com.shopme.admin.user.export.UserExcelExporter;
 import com.shopme.admin.user.export.UserPDFExporter;
@@ -9,13 +10,11 @@ import com.shopme.common.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -112,7 +111,7 @@ public class UserController {
                     , "The user has been added successfully.");
         } else {
             redirectAttributes.addFlashAttribute("message"
-                    , "The user has been edited successfully.");
+                    , "The user has been updated successfully.");
         }
 
         return getRedirectURLSavedUser(user);
@@ -183,6 +182,42 @@ public class UserController {
         List<User> listUsers = service.getListUsers();
         UserPDFExporter exporter = new UserPDFExporter();
         exporter.exportPDF(listUsers, response);
+    }
+
+    @GetMapping("/account")
+    public String viewDetails(@AuthenticationPrincipal ShopmeUserDetails loggedUser
+            , Model model) {
+        String email = loggedUser.getUsername();
+        User user = service.getUserByEmail(email);
+        model.addAttribute("user", user);
+        return "account_form";
+    }
+
+    @PostMapping("/account/update")
+    public String saveAccount(User user
+            , RedirectAttributes redirectAttributes
+            , @RequestParam("image")MultipartFile multipartFile
+            , @AuthenticationPrincipal ShopmeUserDetails loggedUser) throws IOException {
+        if (!multipartFile.isEmpty()){
+            String filename = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+            user.setPhoto(filename);
+            User savedUser = service.updateAccount(user);
+            String uploadDir = "user-photos/" + savedUser.getRecid();
+            FileUploadUtil.cleanDirectory(uploadDir);
+            FileUploadUtil.saveFile(uploadDir, filename, multipartFile);
+
+        } else {
+            if (user.getPhoto().isEmpty()) user.setPhoto(null);
+            service.updateAccount(user);
+        }
+
+        loggedUser.setFirstName(user.getFirstName());
+        loggedUser.setLastName(user.getLastName());
+        redirectAttributes.addFlashAttribute("message"
+                , "Your account details have been updated.");
+
+
+        return "redirect:/account";
     }
 
 }

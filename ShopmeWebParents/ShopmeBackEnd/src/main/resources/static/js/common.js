@@ -3,6 +3,8 @@ $(document).ready(function() {
         e.preventDefault();
         document.logoutForm.submit();
     });
+
+    customizeDropdownMenu();
 });
 
     $(document).ready(function(){
@@ -18,3 +20,17 @@ $(document).ready(function() {
     function clearSearch() {
         window.location = "[[@{/users}]]";
     };
+
+    function customizeDropdownMenu() {
+        $(".navbar .dropdown").hover(
+            function(){
+                $(this).find('.dropdown-menu').first().stop(true, true).delay(250).slideDown();
+            },
+            function(){
+                $(this).find('.dropdown-menu').first().stop(true, true).delay(100).slideUp();
+            }
+        );
+        $(".dropdown > a").click(function(){
+            location.href = this.href;
+        });
+    }
