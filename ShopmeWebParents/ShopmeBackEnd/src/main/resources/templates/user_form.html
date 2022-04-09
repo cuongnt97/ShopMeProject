@@ -6,7 +6,7 @@
 <div th:replace="navigation :: menu"></div>
 
     <div>
-        <h2>Manage Users | [[${pageTitle}]]</h2>
+        <h2>User Management | [[${pageTitle}]]</h2>
     </div>
 
     <form method="post" onsubmit="return checkEmailUnique(this);" style="max-width:700px; margin:0 auto" th:action="@{/users/save}"

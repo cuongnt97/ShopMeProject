@@ -48,7 +48,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .loginPage("/login")
                     .usernameParameter("email")
                     .permitAll()
-                    .and().logout().permitAll();
+                    .and().logout().permitAll()
+                    .and().rememberMe()
+                        .key("Clone_Project_Of_CuongNT_Shopme_Ecommerce")
+                        .tokenValiditySeconds(7 * 24 * 60 * 60)//token valid in 1 week, instead of default 2 week of web browser
+                        ;
     }
 
     @Override
