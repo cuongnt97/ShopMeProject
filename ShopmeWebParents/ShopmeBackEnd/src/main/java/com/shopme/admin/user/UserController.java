@@ -73,7 +73,7 @@ public class UserController {
         //User list
         model.addAttribute("listUsers", listUsers);
 
-        return "list_users";
+        return "user/list_users";
     }
 
     @GetMapping("/users/new")
@@ -85,7 +85,7 @@ public class UserController {
         model.addAttribute("listRoles", listRoles);
         model.addAttribute(user);
         model.addAttribute("pageTitle", "Create User");
-        return "user_form";
+        return "user/user_form";
     }
 
     @PostMapping("/users/save")
@@ -130,7 +130,7 @@ public class UserController {
             model.addAttribute("user", user);
             model.addAttribute("listRoles", listRoles);
             model.addAttribute("pageTitle", "Edit User");
-            return "user_form";
+            return "user/user_form";
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("message", e.getMessage());
             return "redirect:/users";
@@ -190,7 +190,7 @@ public class UserController {
         String email = loggedUser.getUsername();
         User user = service.getUserByEmail(email);
         model.addAttribute("user", user);
-        return "account_form";
+        return "user/account_form";
     }
 
     @PostMapping("/account/update")
