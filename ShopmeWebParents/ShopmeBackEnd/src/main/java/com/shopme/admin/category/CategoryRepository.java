@@ -4,4 +4,6 @@ import com.shopme.common.entities.Category;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 public interface CategoryRepository extends PagingAndSortingRepository<Category, Integer> {
+
+
 }

@@ -43,11 +43,7 @@ public class UserService {
 
         Pageable pageable = PageRequest.of(pageNum - 1, USERS_PER_PAGE, sort);
 
-        //CuongNT
-        System.out.println("UserService47: " + keyword);
-        //CuongNT
         if (keyword != null) {
-            System.out.println("UserService50: " + keyword);
             return userRepo.findAll(keyword, pageable);
         }
 
