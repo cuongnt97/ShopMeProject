@@ -1,6 +1,6 @@
 package com.shopme.admin.user;
 
-import com.shopme.admin.FileUploadUtil;
+import com.shopme.admin.common.FileUploadUtil;
 import com.shopme.admin.security.ShopmeUserDetails;
 import com.shopme.admin.user.export.UserCSVExporter;
 import com.shopme.admin.user.export.UserExcelExporter;

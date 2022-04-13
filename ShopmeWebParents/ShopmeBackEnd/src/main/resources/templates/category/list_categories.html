@@ -12,7 +12,9 @@
         <a class="fa-solid fa-file-pdf fa-2x icon-grey" href="" title="Export to PDF file"></a>
 
     </div>
-
+    <div class="alert alert-success text-center" th:if="${message != null}">
+        [[${message}]]
+    </div>
 
     <div>
         <form action="" class="form-inline">
