@@ -42,5 +42,16 @@ public class Category {
     @OneToMany(mappedBy = "parent")
     private Set<Category> children = new HashSet<>();
 
+    @Transient
+    public String getImagePath(){
+        if (id == null || image == null) {
+            return "/images/image-thumbnail.png";
+        }
+        return ("/category-images/" + this.id + "/" + this.image);
+    }
 
+    public Category(String name) {
+        this.name = name;
+        this.id = id;
+    }
 }
