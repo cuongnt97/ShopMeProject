@@ -1,11 +1,13 @@
 package com.shopme.admin.category;
 
+import com.shopme.admin.exception.CategoryNotFoundException;
 import com.shopme.common.entities.Category;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 @Service
@@ -95,6 +97,14 @@ public class CategoryService {
             name += subCat.getName();
             categoriesInForm.add(new Category(name, subCat.getId()));
             listSubCategoriesUsedInForm(categoriesInForm, subCat, newSubLevel + 1);
+        }
+    }
+
+    public Category getCategoryById(int id) throws CategoryNotFoundException {
+        try {
+            return cateRepo.findById(id).get();
+        } catch (NoSuchElementException e) {
+            throw new CategoryNotFoundException("Could not find this category");
         }
     }
 

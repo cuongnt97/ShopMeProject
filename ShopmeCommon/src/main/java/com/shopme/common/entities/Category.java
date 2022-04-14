@@ -43,7 +43,8 @@ public class Category {
     private Set<Category> children = new HashSet<>();
 
     @Transient
-    public String getImagePath(){
+    public String getCategoryImagePath(){
+
         if (id == null || image == null) {
             return "/images/image-thumbnail.png";
         }
@@ -69,6 +70,7 @@ public class Category {
     public static Category copyCategory(Category category, String name) {
         Category copyCategory = Category.copyCategory(category);
         copyCategory.setName(name);
+
         return copyCategory;
     }
 }
