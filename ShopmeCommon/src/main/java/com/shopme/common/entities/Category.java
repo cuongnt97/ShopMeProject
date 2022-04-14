@@ -54,4 +54,21 @@ public class Category {
         this.name = name;
         this.id = id;
     }
+
+    public static Category copyCategory(Category category) {
+        Category copyCategory = new Category();
+        copyCategory.setId(category.getId());
+        copyCategory.setName(category.getName());
+        copyCategory.setAlias(category.getAlias());
+        copyCategory.setImage(category.getImage());
+        copyCategory.setEnable(category.isEnable());
+
+        return copyCategory;
+    }
+
+    public static Category copyCategory(Category category, String name) {
+        Category copyCategory = Category.copyCategory(category);
+        copyCategory.setName(name);
+        return copyCategory;
+    }
 }

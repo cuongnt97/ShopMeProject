@@ -32,7 +32,6 @@ public class CategoryController {
     public String createNewCategory(Model model) {
         List<Category> listCategories = service.listCateUserdInForm();
 
-
         model.addAttribute("listCategories", listCategories);
         model.addAttribute("category", new Category());
         model.addAttribute("pageTitle", "Create Category");
