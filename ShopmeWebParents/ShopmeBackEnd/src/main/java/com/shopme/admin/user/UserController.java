@@ -68,7 +68,7 @@ public class UserController {
 
         //Pageable
         model.addAttribute("currentPage", pageNum);
-        model.addAttribute("lastPage",(int) pageUsers.getTotalPages());
+        model.addAttribute("lastPage", pageUsers.getTotalPages());
         model.addAttribute("startCount", startCount);
         model.addAttribute("endCount", endCount);
         model.addAttribute("totalItems", pageUsers
