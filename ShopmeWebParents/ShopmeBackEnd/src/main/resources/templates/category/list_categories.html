@@ -48,7 +48,9 @@
             <tbody>
                 <tr th:each="category : ${listCategories}">
                     <td class="hideable-column">[[${category.id}]]</td>
-                    <td></td>
+                    <td class="text-center">
+                        <img class="img-fluid" style="width: 100px" th:src="@{${category.categoryImagePath} }" />
+                    </td>
                     <td>[[${category.name}]]</td>
                     <td>[[${category.alias}]]</td>
                     <td>
@@ -63,8 +65,8 @@
                     </td>
 
                     <td>
-                        <a class="fa-solid fa-pen-to-square fa-2x icon-green" href=""
-                           title="Edit this category"></a>
+                        <a class="fa-solid fa-pen-to-square fa-2x icon-green" th:href="@{'/categories/edit/' + ${category.id} }"
+                           title="Edit this category" ></a>
                         &nbsp;&nbsp;&nbsp;
                         <a class="fa-solid fa-trash fa-2x icon-grey link-delete"
                            href=""
