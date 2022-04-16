@@ -51,7 +51,11 @@ public class CategoryController {
             boolean isCreatingCategory = (category.getId() == null || category.getId() == 0);
 
             String categoryImageInDb = category.getId() == null ? null :  service.getCategoryById((int) category.getId()).getImage();
-            String categoryImageForm = category.getImage();
+            String categoryImageForm = multipartFile.getOriginalFilename();
+
+            System.out.println("CategoryController56: isCreatingCategory " + isCreatingCategory);
+            System.out.println("CategoryController57 categoryImageInDb image " + categoryImageInDb);
+            System.out.println("CategoryController58 categoryImageForm image " + categoryImageForm);
 
             if (!categoryImageForm.equals(categoryImageInDb)) {
 

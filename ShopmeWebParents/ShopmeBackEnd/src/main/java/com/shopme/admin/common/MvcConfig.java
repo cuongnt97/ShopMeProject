@@ -10,26 +10,21 @@ import java.nio.file.Paths;
 @Configuration
 public class MvcConfig implements WebMvcConfigurer {
 
-    /**
-     * Add handlers to serve static resources such as images, js, and, css
-     * files from specific locations under web application root, the classpath,
-     * and others.
-     *
-     * @param registry
-     * @see ResourceHandlerRegistry
-     */
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        String dirName = "user-photos";
-        Path userPhotoDir =  Paths.get("user-photos");
-        String userPhotoPath = userPhotoDir.toFile().getAbsolutePath();
-        registry.addResourceHandler("/" + dirName + "/**")
-                .addResourceLocations("file:" + userPhotoPath + "/");
+	@Override
+	public void addResourceHandlers(ResourceHandlerRegistry registry) {
+		exposeDirectory("../category-images", registry);
+		exposeDirectory("../brand-logos", registry);
+		exposeDirectory("../product-images", registry);
+		exposeDirectory("../site-logo", registry);
+	}
 
-        String categoryImageName = "../category-images";
-        Path categoryImageDir =  Paths.get(categoryImageName);
-        String categoryImagePath = categoryImageDir.toFile().getAbsolutePath();
-        registry.addResourceHandler("/category-images/**")
-                .addResourceLocations("file:" + categoryImagePath + "/");
-    }
+	private void exposeDirectory(String pathPattern, ResourceHandlerRegistry registry) {
+		Path path = Paths.get(pathPattern);
+		String absolutePath = path.toFile().getAbsolutePath();
+
+		String logicalPath = pathPattern.replace("../", "") + "/**";
+
+		registry.addResourceHandler(logicalPath)
+			.addResourceLocations("file:" + absolutePath + "/");
+	}
 }

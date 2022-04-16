@@ -22,24 +22,24 @@ public class CategoryService {
     }
 
     private List<Category> hierarchicalCategories(List<Category> rootCategories) {
-        List<Category> hierachcalCategories = new ArrayList<>();
+        List<Category> hierarchicalCategories = new ArrayList<>();
 
         for (Category rootCategory : rootCategories) {
-            hierachcalCategories.add(Category.copyCategory(rootCategory));
+            hierarchicalCategories.add(Category.copyCategory(rootCategory));
 
             Set<Category> children = rootCategory.getChildren();
             for (Category subCategory : children
                  ) {
                 String name = "--" + subCategory.getName();
-                hierachcalCategories.add(Category.copyCategory(subCategory, name));
+                hierarchicalCategories.add(Category.copyCategory(subCategory, name));
 
-                subHierarchicalCategories(hierachcalCategories, subCategory, 1);
+                subHierarchicalCategories(hierarchicalCategories, subCategory, 1);
             }
         }
-        return hierachcalCategories;
+        return hierarchicalCategories;
     }
 
-    private void subHierarchicalCategories(List<Category> hierachcalCategories, Category parent, int subLevel) {
+    private void subHierarchicalCategories(List<Category> hierarchicalCategories, Category parent, int subLevel) {
         Set<Category> children = parent.getChildren();
 
         int newSubLevel = subLevel + 1;
@@ -51,9 +51,9 @@ public class CategoryService {
             }
             name += subCategory.getName();
 
-            hierachcalCategories.add(Category.copyCategory(subCategory, name));
+            hierarchicalCategories.add(Category.copyCategory(subCategory, name));
 
-            subHierarchicalCategories(hierachcalCategories, subCategory, subLevel);
+            subHierarchicalCategories(hierarchicalCategories, subCategory, subLevel);
         }
     }
 
