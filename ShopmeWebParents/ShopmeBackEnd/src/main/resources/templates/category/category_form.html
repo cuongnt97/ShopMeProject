@@ -44,7 +44,7 @@
             <div class="form-group row">
                 <label class="col-sm-4 col-form-label">Image</label>
                 <div class="col-sm-8 ">
-                    <input type="hidden" th:field="${category.image}">
+                    <input type="hidden" th:field="*{image}">
                     <input th:if="*{id == null}" type="file" id="fileImage" name="fileImage"
                            class="mb-2" required
                            accept="image/jpeg, image/png"/>
