@@ -71,7 +71,7 @@ public class User {
         if (recid == null || photo == null) {
             return "/images/default-user.png";
         }
-        return ("/user-photos/" + this.recid + "/" + this.photo);
+        return ("/ShopmeBackEnd/user-photos/" + this.recid + "/" + this.photo);
     }
 
     public boolean hasRole(String roleName) {
