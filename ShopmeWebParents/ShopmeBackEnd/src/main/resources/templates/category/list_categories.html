@@ -38,7 +38,10 @@
                 <tr>
                     <th class="hideable-column">ID</th>
                     <th>Category Image</th>
-                    <th>Category Name</th>
+                    <th>
+                        <a class="text-white" th:href="@{'/categories?sortDir=' + ${reverseSortDir} }">Category Name</a>
+                        <span th:class="${reverseSortDir == 'desc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}"></span>
+                    </th>
                     <th>Alias</th>
                     <th>Enable</th>
                     <th> </th>
@@ -55,11 +58,11 @@
                     <td>[[${category.alias}]]</td>
                     <td>
                         <a class="icon-green fa-solid fa-circle-check fa-2x"
-                           href=""
+                           th:href="@{'/categories/'+${category.id}+'/enable/false'}"
                            th:if="${category.enable == true}">
                         </a>
                         <a class="icon-grey fa-solid fa-circle fa-2x"
-                           href=""
+                           th:href="@{'/categories/'+${category.id}+'/enable/true'}"
                            th:if="${category.enable == false}">
                         </a>
                     </td>
