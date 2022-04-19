@@ -89,4 +89,24 @@ public class CategoryRepositoryTest {
             System.out.println(category.getName());
         }
     }
+
+    @Test
+    public void testFindByName() {
+
+        String name = "electronics";
+
+        Category category = categoryRepo.findByName(name);
+
+        System.out.println(category.getId());
+    }
+
+    @Test
+    public void testFindByAlias(){
+
+        String alias = "electronics";
+
+        Category category = categoryRepo.findByAlias(alias);
+
+        System.out.println("alias " + category.getAlias());
+    }
 }

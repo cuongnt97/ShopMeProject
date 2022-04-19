@@ -9,8 +9,10 @@
         <h2>Category Management | [[${pageTitle}]]</h2>
     </div>
 
-    <form method="post" style="max-width:500px; margin:0 auto" th:action="@{/categories/save}"
-          th:object="${category}" enctype="multipart/form-data">
+    <form th:action="@{/categories/save}" method="post" style="max-width:500px; margin:0 auto"
+          enctype="multipart/form-data"
+          th:object="${category}"
+          onsubmit="return checkUnique(this)">
         <input th:field="*{id}" type="hidden">
         <div class="border border-secondary rounded p-3">
             <div class="form-group row">
@@ -33,9 +35,10 @@
                 <label class="col-sm-4 col-form-label">Parent Category</label>
                 <div class="col-sm-8">
                     <select class="form-control" th:field="*{parent}" />
-                        <option value="0">[No parent]</option>
-                        <th:block th:each="category : ${listCategories}">
-                            <option th:value="${category.id}">[[${category.name}]]</option>
+                        <option th:if="${category.getParent() != null}" th:value="${category.getParent().id}">[[${category.getParent().name}]]</option>
+                        <option th:unless="${category.getParent() != null}" value="0">[No Parent]</option>
+                        <th:block th:each="cat : ${listCategories}">
+                            <option th:value="${cat.id}">[[${cat.name}]]</option>
                         </th:block>
                     </select>
                 </div>
@@ -94,6 +97,41 @@
 
 <script type="text/javascript">
     moduleURL = "[[@{/categories}]]";
+
+    function checkUnique(form) {
+		catId = $("#id").val();
+		catName = $("#name").val();
+		catAlias = $("#alias").val();
+
+		csrfValue = $("input[name='_csrf']").val();
+
+		url = "[[@{/categories/check_unique}]]";
+
+		params = {id: Number(catId), name: catName, alias: catAlias, _csrf: csrfValue};
+
+		$.post(url, params, function(response) {
+			if (response == "OK") {
+				form.submit();
+			} else if (response == "DuplicateName") {
+				showModalDialog("Warning", "Name is used in another Category");
+			} else if (response == "DuplicateAlias") {
+				showModalDialog("Warning", "Alias is used in another Category");
+			} else {
+				showErrorModal("Error", "Unknown response from server");
+			}
+
+		}).fail(function() {
+			showModalDialog("Error", "Could not connect to the server");
+		});
+
+		return false;
+	}
+
+	function showModalDialog(title, message) {
+	$("#modalTitle").text(title);
+	$("#modalBody").text(message);
+	$("#modalDialog").modal();
+};
 
 
 </script>
