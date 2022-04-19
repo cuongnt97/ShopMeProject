@@ -98,7 +98,6 @@ public class CategoryController {
             Category category = service.getCategoryById(id);
             model.addAttribute("listCategories", listCategories);
             model.addAttribute("category", category);
-            System.out.println("CategoryController101 parent name " + category.getParent().getName());
             model.addAttribute("pageTitle", "Edit Category");
             return "category/category_form";
         } catch (Exception e) {

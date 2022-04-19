@@ -80,7 +80,7 @@
         <div>&nbsp;&nbsp;</div>
         <div th:each="category: ${listCategories}" class="row m-1">
             <div class="col-4">
-                <img style="width: 100px" src="" />
+                <img style="width: 100px" th:src="@{${category.categoryImagePath} }"  />
             </div>
 
             <div class="col-8">
@@ -96,7 +96,7 @@
                        th:if="${category.enable == false}">
                     </a>
                     &nbsp;&nbsp;
-                    <a class="fa-solid fa-pen-to-square fa-2x icon-green" href=""
+                    <a class="fa-solid fa-pen-to-square fa-2x icon-green" th:href="@{'/categories/edit/' + ${category.id} }"
                        title="Edit this category"></a>
                     &nbsp;&nbsp;&nbsp;
                     <a class="fa-solid fa-trash fa-2x icon-grey link-delete"
