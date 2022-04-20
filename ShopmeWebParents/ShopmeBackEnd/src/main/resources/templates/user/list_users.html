@@ -120,6 +120,7 @@
                     &nbsp;&nbsp;&nbsp;
                     <a class="fa-solid fa-trash fa-2x icon-grey link-delete"
                        th:href="@{'/users/delete/' + ${user.recid} }"
+                       th:entityId="${user.recid}"
                        title="Delete this user"></a>
                 </div>
             </div>
@@ -164,25 +165,7 @@
         </nav>
     </div>
 
-    <div class="modal fade text-center" id="confirmModal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title" id="modalTitle">Warning</h4>
-                    <button class="close" data-dismiss="modal" type="button">&times;</button>
-                </div>
-
-                <div class="modal-body">
-                    <span id="confirmText"></span>
-                </div>
-
-                <div class="modal-footer">
-                    <a class="btn btn-success" href="" id="yesButton">Yes</a>
-                    <button class="btn btn-danger" data-dismiss="modal" type="button">No</button>
-                </div>
-            </div>
-        </div>
-    </div>
+    <div th:replace="modal_fragments :: confirm_modal"></div>
 
     <div th:replace="fragments :: footer"></div>
 </div>
