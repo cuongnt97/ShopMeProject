@@ -168,4 +168,15 @@ public class CategoryService {
     public void updateEnableStatusCategory(Integer id, boolean enable) {
         cateRepo.updateEnableStatus(id, enable);
     }
+
+    public void deleteCategory(Integer id) throws CategoryNotFoundException {
+
+        Integer count = cateRepo.countById(id);
+
+        if (count == null || count == 0){
+            throw new CategoryNotFoundException("Could not find any category with ID: " + id);
+        }
+
+        cateRepo.deleteById(id);
+    }
 }

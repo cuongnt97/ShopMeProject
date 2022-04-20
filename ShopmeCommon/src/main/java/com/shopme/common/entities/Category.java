@@ -43,6 +43,9 @@ public class Category {
     private Set<Category> children = new HashSet<>();
 
     @Transient
+    private boolean hasChildren;
+
+    @Transient
     public String getCategoryImagePath(){
 
         if (id == null || image == null) {
@@ -63,6 +66,7 @@ public class Category {
         copyCategory.setAlias(category.getAlias());
         copyCategory.setImage(category.getImage());
         copyCategory.setEnable(category.isEnable());
+        copyCategory.setHasChildren(category.getChildren().size() > 0);
 
         return copyCategory;
     }
@@ -73,4 +77,5 @@ public class Category {
 
         return copyCategory;
     }
+
 }

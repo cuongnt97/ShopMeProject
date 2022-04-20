@@ -127,4 +127,25 @@ public class CategoryController {
         redirectAttributes.addFlashAttribute("message", "The category ID " + id + " has been " + status );
         return "redirect:/categories";
     }
+
+    @GetMapping("/categories/delete/{id}")
+    public String deleteUser(@PathVariable(value = "id") Integer id
+            , RedirectAttributes redirectAttributes) {
+        try {
+
+            //Delete category with id
+            service.deleteCategory(id);
+            //Declare path for category's photo
+            String uploadDir = "category-images/" + id;
+            //Delete category's photo
+            FileUploadUtil.removeDir(uploadDir);
+            //Notice delete success
+            redirectAttributes.addFlashAttribute("message", "Delete category successfully.");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("message", e.getMessage());
+
+        }
+        return "redirect:/categories";
+    }
+
 }
