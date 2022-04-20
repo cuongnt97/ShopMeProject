@@ -175,12 +175,12 @@ public class UserController {
     public String deleteUser(@PathVariable(value = "id") Integer id
                             , RedirectAttributes redirectAttributes) {
         try {
-            //Delete user with id
-            service.deleteUser(id);
             //Declare path for user's photo
             String uploadDir = "ShopmeBackEnd/user-photos/" + id;
             //Delete user's photo
-            FileUploadUtil.removeDir(uploadDir);
+            FileUtils.deleteDirectory(new File(uploadDir));
+            //Delete user with id
+            service.deleteUser(id);
             //Notice delete success
             redirectAttributes.addFlashAttribute("message", "Delete user successfully.");
         } catch (Exception e) {
