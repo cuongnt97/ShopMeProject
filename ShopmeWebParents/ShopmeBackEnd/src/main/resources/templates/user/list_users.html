@@ -169,20 +169,16 @@
 
     <div th:replace="fragments :: footer"></div>
 </div>
+<script type="text/javascript" th:src="@{/js/common_list.js}"></script>
 <script type="text/javascript">
-        $(document).ready(function(){
+    $(document).ready(function(){
         $(".link-delete").on("click", function(e){
             e.preventDefault();
-            link = $(this);
-            $("#yesButton").attr("href",link.attr("href"));
-            $("#confirmText").text("Are you sure you want to delete this user ?")
-            $("#confirmModal").modal();
+            showDeleteConfirmModal($(this), 'user');
         });
     });
 
-    function clearSearch() {
-        window.location = "[[@{/users}]]";
-    };
+    moduleURL = "[[@{/users}]]";
 </script>
 </body>
 </html>
