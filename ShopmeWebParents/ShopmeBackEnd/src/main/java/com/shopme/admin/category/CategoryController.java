@@ -16,6 +16,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
+import static com.shopme.common.Constants.CATEGORY_PER_PAGE;
+
 @Controller
 public class CategoryController {
 
@@ -26,13 +28,14 @@ public class CategoryController {
     public String listFirstPageCategories(String sortDir
                                     , Model model) {
 
-        return listCategoriesByPage(1, sortDir, model);
+        return listCategoriesByPage(1, sortDir, model, null);
     }
 
     @GetMapping("/categories/page/{pageNum}")
     public String listCategoriesByPage(@PathVariable("pageNum") int pageNum
                              , @Param("sortDir") String sortDir
-                             , Model model){
+                             , Model model
+                             , @Param("keyword") String keyword){
 
         if (sortDir == null || sortDir.isEmpty()) {
             sortDir = "asc";
@@ -40,7 +43,14 @@ public class CategoryController {
 
         CategoryPageDetails pageDetails = new CategoryPageDetails();
 
-        List<Category> listCategories = service.listCategories(pageDetails, pageNum, sortDir);
+        List<Category> listCategories = service.listCategories(pageDetails, pageNum, sortDir, keyword);
+
+        int startCount = (pageNum - 1) * CATEGORY_PER_PAGE + 1;
+        int endCount = startCount + CATEGORY_PER_PAGE -1;
+
+        if (endCount > (int) pageDetails.getTotalElements()){
+            endCount = (int) pageDetails.getTotalElements();
+        }
 
         String reverseSortDir = sortDir.equals("asc") ? "desc" : "asc";
 
@@ -50,8 +60,11 @@ public class CategoryController {
         model.addAttribute("currentPage", pageNum);
         model.addAttribute("totalPage", pageDetails.getTotalPages());
         model.addAttribute("totalElements", pageDetails.getTotalElements());
+        model.addAttribute("startCount", startCount);
+        model.addAttribute("endCount", endCount);
         model.addAttribute("sortField","name");
         model.addAttribute("sortDir", sortDir);
+        model.addAttribute("keyword", keyword);
 
 
         model.addAttribute("listCategories", listCategories);

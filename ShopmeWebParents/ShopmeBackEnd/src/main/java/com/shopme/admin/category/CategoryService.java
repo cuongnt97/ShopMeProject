@@ -21,7 +21,10 @@ public class CategoryService {
     @Autowired
     private CategoryRepository cateRepo;
 
-    public List<Category> listCategories(CategoryPageDetails pageDetails, int pageNum, String sortDir){
+    public List<Category> listCategories(CategoryPageDetails pageDetails
+                                        , int pageNum
+                                        , String sortDir
+                                        , String keyword){
 
         Sort sort = Sort.by("name");
 
@@ -34,18 +37,34 @@ public class CategoryService {
         }
 
         Pageable pageable = PageRequest.of(pageNum - 1, CATEGORY_PER_PAGE, sort);
-        Page<Category> pageCategories = cateRepo.listRootCategories(pageable);
+
+        boolean checkNull = (keyword != null && !keyword.isEmpty());
+        Page<Category> pageCategories = null;
+        if (checkNull){
+            pageCategories = cateRepo.search(keyword, pageable);
+        } else {
+            pageCategories = cateRepo.listRootCategories(pageable);
+        }
+
 
         List<Category> rootCategories = pageCategories.getContent();
 
         pageDetails.setTotalPages(pageCategories.getTotalPages());
         pageDetails.setTotalElements(pageCategories.getTotalElements());
 
-        System.out.println("CategoryService44 totalPage " + pageCategories.getTotalPages());
-        System.out.println("CategoryService45 totalElements " + pageCategories.getTotalElements());
+        if (checkNull){
+            List<Category> searchResult = pageCategories.getContent();
+            for (Category category: searchResult
+                 ) {
+                category.setHasChildren(category.getChildren().size() > 0);
+            }
 
+            return searchResult;
+        } else {
 
-        return hierarchicalCategories(rootCategories, sortDir);
+            return hierarchicalCategories(rootCategories, sortDir);
+        }
+
     }
 
     private List<Category> hierarchicalCategories(List<Category> rootCategories, String sortDir) {

@@ -62,12 +62,29 @@
                 </li>
                 <li th:class="${currentPage == totalPage ? 'page-item disabled' : 'page-item'}">
 
-                    <a th:replace="fragments :: page_number( ${moduleURL}, ${lastPage}, 'Last')" />
+                    <a th:replace="fragments :: page_number( ${moduleURL}, ${totalPage}, 'Last')" />
                 </li>
 
             </ul>
         </nav>
     </div>
+    </div>
+
+    <div th:fragment="search_form(moduleURL)">
+        <form th:action="@{${moduleURL} }" class="form-inline">
+            <input type="hidden" name="sortField" th:value="${sortField}">
+            <input type="hidden" name="sortDir" th:value="${sortDir}">
+            Search&nbsp;
+            <input type="search" name="keyword" th:value="${keyword}" class="form-control m-3">
+            &nbsp;&nbsp;
+            <button type="submit" value="Search" class="btn btn-primary">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+            &nbsp;&nbsp;
+            <button type="button" value="Clear" class="btn btn-secondary" onclick="clearSearch()">
+                <i class="fa-solid fa-eraser"></i>
+            </button>
+        </form>
     </div>
 
 </body>
