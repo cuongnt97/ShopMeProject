@@ -24,11 +24,51 @@
               th:if="${sortField == fieldName}"></span>
     </th>
 
-    <a th:fragment="page_number(pageNum, label)" class="page-link"
-       th:href="@{'/users/page/' + ${pageNum} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + '&keyword=' + ${keyword != null ? keyword : '' }  }">[[${label}]]</a>
+    <a th:fragment="page_number(moduleURL, pageNum, label)" class="page-link"
+       th:href="@{${moduleURL} + '/page/' + ${pageNum} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + '&keyword=' + ${keyword != null ? keyword : '' }  }">[[${label}]]</a>
 
     <div class="text-center m-3" th:fragment="footer">
         <p><strong><em>Shopme Control Panel - Copyright &copy; Shopme</em></strong></p>
     </div>
+
+    <div th:fragment="pagination(moduleURL, entityName)" th:remove="tag">
+    <!--Paging-->
+    <div class="text-center m-1" th:if="${totalElements > 0}">
+        <span>Showing [[${entityName}]] # [[${startCount}]] to [[${endCount}]] of [[${totalElements}]]</span>
+    </div>
+
+    <div class="text-center m-1" th:unless="${totalElements > 0}">
+        <span>Not [[${entityName}]] found</span>
+    </div>
+
+    <div th:if="${totalPage > 1}">
+        <nav>
+            <ul class="pagination justify-content-center flex-wrap" >
+                <li th:class="${currentPage == 1 ? 'page-item disabled' : 'page-item'}">
+                    <a th:replace="fragments :: page_number( ${moduleURL}, 1, 'First')" />
+                </li>
+
+                <li th:class="${currentPage == 1 ? 'page-item disabled' : 'page-item'}">
+
+                    <a th:replace="fragments :: page_number( ${moduleURL}, ${currentPage - 1}, 'Previous')" />
+                </li>
+                <li th:class="${currentPage == i ? 'page-item active' : 'page-item'}"
+                    th:each="i : ${#numbers.sequence(1, totalPage)}">
+
+                    <a th:replace="fragments :: page_number( ${moduleURL}, ${i}, ${i})" />
+                </li>
+                <li th:class="${currentPage == totalPage ? 'page-item disabled' : 'page-item'}">
+                    <a th:replace="fragments :: page_number( ${moduleURL}, ${currentPage + 1}, 'Next')" />
+                </li>
+                <li th:class="${currentPage == totalPage ? 'page-item disabled' : 'page-item'}">
+
+                    <a th:replace="fragments :: page_number( ${moduleURL}, ${lastPage}, 'Last')" />
+                </li>
+
+            </ul>
+        </nav>
+    </div>
+    </div>
+
 </body>
 </html>

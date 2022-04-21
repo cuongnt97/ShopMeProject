@@ -1,7 +1,6 @@
 package com.shopme.admin.category;
 
 import com.shopme.admin.common.FileUploadUtil;
-import com.shopme.admin.exception.CategoryNotFoundException;
 import com.shopme.common.entities.Category;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -25,17 +23,38 @@ public class CategoryController {
     public CategoryService service;
 
     @GetMapping("/categories")
-    public String listAllCategories(@Param("sortDir") String sortDir
+    public String listFirstPageCategories(String sortDir
                                     , Model model) {
-        if (sortDir == null || sortDir.isEmpty()){
+
+        return listCategoriesByPage(1, sortDir, model);
+    }
+
+    @GetMapping("/categories/page/{pageNum}")
+    public String listCategoriesByPage(@PathVariable("pageNum") int pageNum
+                             , @Param("sortDir") String sortDir
+                             , Model model){
+
+        if (sortDir == null || sortDir.isEmpty()) {
             sortDir = "asc";
         }
 
-        List<Category> listCategories = service.getListCategories(sortDir);
+        CategoryPageDetails pageDetails = new CategoryPageDetails();
+
+        List<Category> listCategories = service.listCategories(pageDetails, pageNum, sortDir);
+
         String reverseSortDir = sortDir.equals("asc") ? "desc" : "asc";
 
-        model.addAttribute("listCategories", listCategories);
+
         model.addAttribute("reverseSortDir", reverseSortDir);
+
+        model.addAttribute("currentPage", pageNum);
+        model.addAttribute("totalPage", pageDetails.getTotalPages());
+        model.addAttribute("totalElements", pageDetails.getTotalElements());
+        model.addAttribute("sortField","name");
+        model.addAttribute("sortDir", sortDir);
+
+
+        model.addAttribute("listCategories", listCategories);
 
         return "category/list_categories";
     }

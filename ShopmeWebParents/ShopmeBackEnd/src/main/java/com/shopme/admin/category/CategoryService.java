@@ -3,11 +3,16 @@ package com.shopme.admin.category;
 import com.shopme.admin.exception.CategoryNotFoundException;
 import com.shopme.common.entities.Category;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.*;
+
+import static com.shopme.common.Constants.CATEGORY_PER_PAGE;
 
 @Service
 @Transactional
@@ -16,8 +21,10 @@ public class CategoryService {
     @Autowired
     private CategoryRepository cateRepo;
 
-    public List<Category> getListCategories(String sortDir){
+    public List<Category> listCategories(CategoryPageDetails pageDetails, int pageNum, String sortDir){
+
         Sort sort = Sort.by("name");
+
         if (sortDir == null || sortDir.isEmpty()){
             sort = sort.ascending();
         } else if(sortDir.equals("asc")){
@@ -25,7 +32,19 @@ public class CategoryService {
         } else if (sortDir.equals("desc")){
             sort = sort.descending();
         }
-        List<Category> rootCategories = cateRepo.listRootCategories(sort);
+
+        Pageable pageable = PageRequest.of(pageNum - 1, CATEGORY_PER_PAGE, sort);
+        Page<Category> pageCategories = cateRepo.listRootCategories(pageable);
+
+        List<Category> rootCategories = pageCategories.getContent();
+
+        pageDetails.setTotalPages(pageCategories.getTotalPages());
+        pageDetails.setTotalElements(pageCategories.getTotalElements());
+
+        System.out.println("CategoryService44 totalPage " + pageCategories.getTotalPages());
+        System.out.println("CategoryService45 totalElements " + pageCategories.getTotalElements());
+
+
         return hierarchicalCategories(rootCategories, sortDir);
     }
 
