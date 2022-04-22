@@ -45,6 +45,10 @@ public class Category {
     @Transient
     private boolean hasChildren;
 
+    public Category(int id) {
+        this.id = id;
+    }
+
     @Transient
     public String getCategoryImagePath(){
 
@@ -78,4 +82,8 @@ public class Category {
         return copyCategory;
     }
 
+    @Override
+    public String toString() {
+        return super.toString();
+    }
 }
