@@ -9,7 +9,7 @@
         <h2>Category Management</h2>
         <a class="fa-solid fa-folder-plus fa-2x icon-grey" th:href="@{/categories/new}" title="Create New Category"></a>
          &nbsp;|&nbsp;
-        <a class="fa-solid fa-file-pdf fa-2x icon-grey" href="" title="Export to PDF file"></a>
+        <a class="fa-solid fa-file-csv fa-2x icon-grey" th:href="@{/categories/export/csv}" title="Export to CSV file"></a>
 
     </div>
     <div class="alert alert-success text-center" th:if="${message != null}">

@@ -1,5 +1,6 @@
 package com.shopme.admin.user.export;
 
+import com.shopme.admin.common.AbtractExporter;
 import com.shopme.common.entities.User;
 import org.supercsv.io.CsvBeanWriter;
 import org.supercsv.io.ICsvBeanWriter;
@@ -12,7 +13,7 @@ import java.util.List;
 public class UserCSVExporter extends AbtractExporter {
 
     public void exportCSV(List<User> listUsers, HttpServletResponse response) throws IOException {
-        super.setResponseHeader(response, "text/csv", ".csv");
+        super.setResponseHeader(response, "text/csv", ".csv", "user_");
         ICsvBeanWriter csvWriter = new CsvBeanWriter(response.getWriter(), CsvPreference.STANDARD_PREFERENCE);
         String[] csvHeader = {"User ID", " Email", " First Name", " Last Name", " Roles", " Enable"};
 

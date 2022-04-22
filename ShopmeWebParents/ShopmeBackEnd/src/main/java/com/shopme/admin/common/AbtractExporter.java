@@ -1,4 +1,4 @@
-package com.shopme.admin.user.export;
+package com.shopme.admin.common;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -8,10 +8,10 @@ import java.util.Date;
 
 public class AbtractExporter {
     public void setResponseHeader(HttpServletResponse response, String contentType,
-                                  String extension) throws IOException {
+                                  String extension, String prefix) throws IOException {
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
         String timestamp = dateFormatter.format(new Date());
-        String fileName = "user_" + timestamp + extension;
+        String fileName = prefix + timestamp + extension;
 
         response.setContentType(contentType);
 

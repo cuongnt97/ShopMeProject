@@ -207,13 +207,13 @@ public class UserController {
 
     //Export list user to csv
     @GetMapping("/users/export/csv")
-    public void exportToCSV(HttpServletResponse reponse) throws IOException {
+    public void exportToCSV(HttpServletResponse response) throws IOException {
         //Get list users
         List<User> listUsers = service.getListUsers();
         //Declare new UserCSVExporter object
         UserCSVExporter exporter = new UserCSVExporter();
         //Export to csv by UserCSVExporter object through method exportCSV
-        exporter.exportCSV(listUsers, reponse);
+        exporter.exportCSV(listUsers, response);
     }
 
     @GetMapping("/users/export/excel")
