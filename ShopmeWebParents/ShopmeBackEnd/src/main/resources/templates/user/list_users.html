@@ -16,11 +16,9 @@
         <a class="fa-solid fa-file-pdf fa-2x icon-grey" th:href="@{/users/export/pdf}" title="Export to PDF file"></a>
 
     </div>
-    <div class="alert alert-success text-center" th:if="${message != null}">
-        [[${message}]]
-    </div>
 
-    <div th:replace="fragments :: search_form('/users/page/1')"></div>
+
+    <div th:replace="fragments :: search_form_and_message('/users/page/1')"></div>
 
     <div class="full-details">
         <table class="table table-bordered table-striped table-hoover table-responsive-xL">
@@ -30,16 +28,16 @@
                     <th>Photo</th>
 
                     <th class="hideable-column">
-                        <th th:replace="fragments :: column_link('email', 'Email', 'tag')" />
+                        <th th:replace="fragments :: column_link('/users', 'email', 'Email', 'tag')" />
                     </th>
 
-                    <th th:replace="fragments :: column_link('firstName', 'First Name', 'none')"/>
+                    <th th:replace="fragments :: column_link('/users', 'firstName', 'First Name', 'none')"/>
 
-                    <th th:replace="fragments :: column_link('lastName', 'Last Name', 'none')"/>
+                    <th th:replace="fragments :: column_link('/users', 'lastName', 'Last Name', 'none')"/>
 
                     <th>Role</th>
 
-                    <th th:replace="fragments :: column_link('enable', 'Enable', 'none')" />
+                    <th th:replace="fragments :: column_link('/users', 'enable', 'Enable', 'none')" />
 
 
                     <th></th>
@@ -55,24 +53,14 @@
                     <td>[[${user.firstName}]]</td>
                     <td>[[${user.lastName}]]</td>
                     <td>[[${user.roles}]]</td>
-                    <td class="text-center">
-                        <a class="icon-green fa-solid fa-circle-check fa-2x"
-                           th:href="@{'/users/'+${user.recid}+'/enable/false'}"
-                           th:if="${user.enable == true}">
-                        </a>
-                        <a class="icon-grey fa-solid fa-circle fa-2x"
-                           th:href="@{'/users/'+${user.recid}+'/enable/true'}"
-                           th:if="${user.enable == false}">
-                        </a>
 
+                    <td>
+                        <div th:replace="fragments :: status(${user.enable}, 'user', '/users/' + ${user.recid})" ></div>
                     </td>
                     <td>
-                        <a class="fa-solid fa-pen-to-square fa-2x icon-green" th:href="@{'/users/edit/' + ${user.recid} }"
-                           title="Edit this user"></a>
-                        &nbsp;&nbsp;&nbsp;
-                        <a class="fa-solid fa-trash fa-2x icon-grey link-delete"
-                           th:href="@{'/users/delete/' + ${user.recid} }"
-                           title="Delete this user"></a>
+                        <div th:replace="fragments :: edit('user', '/users/edit/' + ${user.recid})" />
+                        &nbsp;&nbsp;
+                        <div th:replace="fragments :: delete('user', '/users/delete/' + ${user.recid}, true)" />
                     </td>
                 </tr>
             </tbody>
@@ -91,22 +79,11 @@
                 <div>[[${user.roles}]]</div>
                 <div class="mt-1"></div>
                 <div>
-                    <a class="icon-green fa-solid fa-circle-check fa-2x"
-                       th:href="@{'/users/'+${user.recid}+'/enable/false'}"
-                       th:if="${user.enable == true}">
-                    </a>
-                    <a class="icon-grey fa-solid fa-circle fa-2x"
-                       th:href="@{'/users/'+${user.recid}+'/enable/true'}"
-                       th:if="${user.enable == false}">
-                    </a>
+                    <div th:replace="fragments :: status(${user.enable}, 'user', '/users/' + ${user.recid})" />
                     &nbsp;&nbsp;
-                    <a class="fa-solid fa-pen-to-square fa-2x icon-green" th:href="@{'/users/edit/' + ${user.recid} }"
-                       title="Edit this user"></a>
-                    &nbsp;&nbsp;&nbsp;
-                    <a class="fa-solid fa-trash fa-2x icon-grey link-delete"
-                       th:href="@{'/users/delete/' + ${user.recid} }"
-                       th:entityId="${user.recid}"
-                       title="Delete this user"></a>
+                    <div th:replace="fragments :: edit('user', '/users/edit/' + ${user.recid})" />
+                    &nbsp;&nbsp;
+                    <div th:replace="fragments :: delete('user', '/users/delete/' + ${user.recid}, true)" />
                 </div>
             </div>
 
