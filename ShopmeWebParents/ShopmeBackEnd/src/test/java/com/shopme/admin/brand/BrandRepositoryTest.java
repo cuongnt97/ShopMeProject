@@ -25,8 +25,8 @@ public class BrandRepositoryTest {
 
     @Test
     public void testInsertOneCategory(){
-        Category laptops = new Category(6);
-        Brand brand = new Brand(null, "Samsung", "Electronic", new HashSet<>());
+        Category laptops = new Category(4);
+        Brand brand = new Brand(null, "Apple", "Electronic", new HashSet<>());
         brand.getCategories().add(laptops);
 
         Brand savedBrand = brandRepo.save(brand);
