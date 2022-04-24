@@ -212,7 +212,7 @@ public class CategoryService {
         Integer count = cateRepo.countById(id);
 
         if (count == null || count == 0){
-            throw new CategoryNotFoundException("Could not find any category with ID: " + id);
+            throw new CategoryNotFoundException("Could not find any category with ID " + id);
         }
 
         cateRepo.deleteById(id);
