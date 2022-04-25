@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 
 import static com.shopme.common.Constants.BRAND_PER_PAGE;
@@ -155,5 +157,14 @@ public class BrandController {
         }
 
         return "redirect:/brands";
+    }
+
+    @GetMapping("/brands/export/csv")
+    public void exportToCSV(HttpServletResponse response) throws IOException{
+        List<Brand> listBrands = brandService.listAll();
+
+        BrandCSVExporter exporter = new BrandCSVExporter();
+
+        exporter.exportCSV(listBrands, response);
     }
 }

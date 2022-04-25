@@ -8,5 +8,5 @@ public class Constants {
 
     public static final int CATEGORY_PER_PAGE = 4;
 
-    public static final int BRAND_PER_PAGE = 10;
+    public static final int BRAND_PER_PAGE = 6;
 }

@@ -37,7 +37,7 @@ public class Brand {
 
     @Override
     public String toString() {
-        return "Brand [id=" + ", name=" + name + ", categories=" + categories + "]";
+        return "Brand [id=" + id + ", name=" + name + ", categories=" + categories + "]";
     }
 
     @Transient
