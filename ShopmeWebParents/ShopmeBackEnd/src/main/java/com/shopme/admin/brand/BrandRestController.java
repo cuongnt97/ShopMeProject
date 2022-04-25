@@ -13,6 +13,6 @@ public class BrandRestController {
 
     @PostMapping("/brands/check_unique")
     public String checkDuplicatedBrand(@Param("id") int id, @Param("name") String name) {
-        return service.checkBrandUnique(id, name) ? "OK" : "Duplicated";
+        return service.checkUnique(id, name);
     }
 }

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 public interface BrandRepository extends PagingAndSortingRepository<Brand, Integer> {
 
     @Query("SELECT b FROM Brand b WHERE b.name = :name")
-    Brand getBrandByName(String name);
+    Brand findByName(String name);
 
     Integer countById(Integer id);
 }

@@ -18,20 +18,17 @@ public class BrandService {
         return (List<Brand>) brandRepo.findAll();
     }
 
-    public boolean checkBrandUnique(Integer id, String name) {
-        Brand brandByName = brandRepo.getBrandByName(name);
-
-        if (brandByName == null) {
-            return true;
-        }
-
-        boolean isCreatingNew = (id == null);
-
-        if (isCreatingNew) {
-            return brandByName == null;
+    public String checkUnique(Integer id, String name) {
+        Brand brandByName = brandRepo.findByName(name);
+        boolean isCreatingNew = (id == null || id == 0);
+        if (isCreatingNew){
+            if (brandByName != null) return "Duplicated";
         } else {
-            return brandByName.getId() == id;
+            if (brandByName != null && brandByName.getId() != id){
+                return "Duplicated";
+            }
         }
+        return "OK";
     }
 
     public Brand saveBrand(Brand brand) {

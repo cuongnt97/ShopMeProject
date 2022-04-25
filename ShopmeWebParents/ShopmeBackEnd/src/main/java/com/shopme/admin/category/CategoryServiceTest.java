@@ -1,6 +1,7 @@
 package com.shopme.admin.category;
 
 import com.shopme.common.entities.Category;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -35,7 +36,7 @@ public class CategoryServiceTest {
         Mockito.when(repo.findByAlias(alias)).thenReturn(null);
         String result = service.checkUnique(id, name, alias);
 
-        System.out.println("result " + result);
+        Assertions.assertEquals("DuplicateName", result);
     }
 
     @Test
@@ -54,7 +55,7 @@ public class CategoryServiceTest {
         Mockito.when(repo.findByAlias(alias)).thenReturn(category);
         String result = service.checkUnique(id, name, alias);
 
-        System.out.println("result " + result);
+        Assertions.assertEquals("DuplicateAlias", result);
     }
 
     @Test
