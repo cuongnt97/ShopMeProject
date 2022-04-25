@@ -5,6 +5,8 @@ import com.shopme.admin.common.FileUploadUtil;
 import com.shopme.common.entities.Brand;
 import com.shopme.common.entities.Category;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -17,6 +19,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
+import static com.shopme.common.Constants.BRAND_PER_PAGE;
+
 @Controller
 public class BrandController {
 
@@ -27,10 +31,46 @@ public class BrandController {
     private CategoryService cateService;
 
     @GetMapping("/brands")
-    public String listBrand(Model model) {
-        List<Brand> listBrands = brandService.listAll();
+    public String listFirstPage(String sortDir, Model model) {
 
+        return listBrandsByPage(1, sortDir, model, null);
+    }
+
+    @GetMapping("/brands/page/{pageNum}")
+    public String listBrandsByPage(@PathVariable("pageNum") int pageNum
+                                   , @Param("sortDir") String sortDir
+                                   , Model model
+                                   , @Param("keyword") String keyword ){
+
+        if (sortDir == null || sortDir.isEmpty()){
+            sortDir = "asc";
+        }
+        Page<Brand> pageBrands = brandService.listByPage(pageNum, sortDir, keyword);
+
+        List<Brand> listBrands = pageBrands.getContent();
+
+        long startCount = (pageNum - 1) * BRAND_PER_PAGE + 1;
+        long endCount = startCount + BRAND_PER_PAGE - 1;
+
+        if (endCount > pageBrands.getTotalElements()){
+            endCount = pageBrands.getTotalElements();
+        }
+
+        //Get the reverse order of order field
+        String reverseSortDir = sortDir.equals("asc") ? "desc" : "asc";
+
+        model.addAttribute("reverseSortDir", reverseSortDir);
+
+        model.addAttribute("currentPage", pageNum);
+        model.addAttribute("totalPage", pageBrands.getTotalPages());
+        model.addAttribute("totalElements", pageBrands.getTotalElements());
+        model.addAttribute("startCount", startCount);
+        model.addAttribute("endCount", endCount);
+        model.addAttribute("sortField","name");
+        model.addAttribute("sortDir", sortDir);
+        model.addAttribute("keyword", keyword);
         model.addAttribute("listBrands", listBrands);
+
         return "brand/list_brands";
     }
 

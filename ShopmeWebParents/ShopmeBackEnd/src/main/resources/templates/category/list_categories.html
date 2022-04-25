@@ -8,7 +8,7 @@
     <div>
         <h2>Category Management</h2>
         <a class="fa-solid fa-folder-plus fa-2x icon-grey" th:href="@{/categories/new}" title="Create New Category"></a>
-         &nbsp;|&nbsp;
+         &nbsp;&nbsp;
         <a class="fa-solid fa-file-csv fa-2x icon-grey" th:href="@{/categories/export/csv}" title="Export to CSV file"></a>
 
     </div>
@@ -55,12 +55,12 @@
         <div>&nbsp;&nbsp;</div>
         <div th:each="category: ${listCategories}" class="row m-1">
             <div class="col-4">
-                <img style="width: 100px" th:src="@{${category.categoryImagePath} }"  />
+                <img style="width: 100px" th:src="@{${category.categoryImagePath} }" class="img-fluid" />
             </div>
 
             <div class="col-8">
                 <div>[[${category.name}]]</div>
-                <div class="mt-1"></div>
+                <div class="mt-2"></div>
                 <div>
                     <div th:replace="fragments :: status(${category.enable}, 'category', '/categories/' + ${category.id})" ></div>
                     &nbsp;&nbsp;

@@ -8,11 +8,11 @@
     <div>
         <h2>User Management</h2>
         <a class="fa-solid fa-user-plus fa-2x icon-grey" th:href="@{/users/new}" title="Create New User"></a>
-        &nbsp;|&nbsp;
+        &nbsp;&nbsp;
         <a class="fa-solid fa-file-csv fa-2x icon-grey" th:href="@{/users/export/csv}" title="Export to CSV file"></a>
-        &nbsp;|&nbsp;
+        &nbsp;&nbsp;
         <a class="fa-solid fa-file-excel fa-2x icon-grey" th:href="@{/users/export/excel}" title="Export to Excel file"></a>
-        &nbsp;|&nbsp;
+        &nbsp;&nbsp;
         <a class="fa-solid fa-file-pdf fa-2x icon-grey" th:href="@{/users/export/pdf}" title="Export to PDF file"></a>
 
     </div>
@@ -77,7 +77,7 @@
             <div class="col-8">
                 <div>[[${user.getFullName}]]</div>
                 <div>[[${user.roles}]]</div>
-                <div class="mt-1"></div>
+                <div class="mt-2"></div>
                 <div>
                     <div th:replace="fragments :: status(${user.enable}, 'user', '/users/' + ${user.recid})" />
                     &nbsp;&nbsp;
