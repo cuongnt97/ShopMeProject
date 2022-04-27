@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.21, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.28, for macos11 (x86_64)
 --
 -- Host: localhost    Database: shopmedb
 -- ------------------------------------------------------
--- Server version	8.0.21
+-- Server version	8.0.28
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -101,6 +101,52 @@ INSERT INTO `categories` VALUES (1,'electronics',_binary '','electronics.png','
 UNLOCK TABLES;
 
 --
+-- Table structure for table `products`
+--
+
+DROP TABLE IF EXISTS `products`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `products` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(256) COLLATE utf8_bin NOT NULL,
+  `alias` varchar(64) COLLATE utf8_bin NOT NULL,
+  `short_description` varchar(512) COLLATE utf8_bin NOT NULL,
+  `full_description` varchar(4096) COLLATE utf8_bin NOT NULL,
+  `created_time` datetime(6) DEFAULT NULL,
+  `updated_time` datetime(6) DEFAULT NULL,
+  `enable` bit(1) NOT NULL DEFAULT b'1',
+  `in_stock` bit(1) DEFAULT b'1',
+  `cost` float NOT NULL DEFAULT '0',
+  `price` float NOT NULL DEFAULT '0',
+  `discount_percent` float DEFAULT '0',
+  `length` float NOT NULL DEFAULT '0',
+  `width` float NOT NULL DEFAULT '0',
+  `height` float NOT NULL DEFAULT '0',
+  `weight` float NOT NULL DEFAULT '0',
+  `brand_id` int DEFAULT NULL,
+  `category_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UK_8qwq8q3hk7cxkp9gruxupnif5` (`alias`),
+  UNIQUE KEY `UK_o61fmio5yukmmiqgnxf8pnavn` (`name`),
+  KEY `FKa3a4mpsfdf4d2y6r8ra3sc8mv` (`brand_id`),
+  KEY `FKog2rp4qthbtt2lfyhfo32lsw9` (`category_id`),
+  CONSTRAINT `FKa3a4mpsfdf4d2y6r8ra3sc8mv` FOREIGN KEY (`brand_id`) REFERENCES `brands` (`id`),
+  CONSTRAINT `FKog2rp4qthbtt2lfyhfo32lsw9` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb3 COLLATE=utf8_bin;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `products`
+--
+
+LOCK TABLES `products` WRITE;
+/*!40000 ALTER TABLE `products` DISABLE KEYS */;
+INSERT INTO `products` VALUES (2,'Dell Inspiron 3000','dell_inspiron_3000','Short description for Dell Laptop','Full description for Dell Laptop','2022-04-27 17:00:46.893000','2022-04-27 17:00:46.893000',_binary '',_binary '',350,450,0,0,0,0,0,38,6),(3,'Acer Aspire Desktop','acer_aspire_desktop','Short description for Acer Aspire','Full description for Acer Aspire','2022-04-27 17:02:23.140000','2022-04-27 17:02:23.140000',_binary '',_binary '',600,678,0,0,0,0,0,37,5);
+/*!40000 ALTER TABLE `products` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `roles`
 --
 
@@ -143,7 +189,7 @@ CREATE TABLE `users` (
   `photo` varchar(64) DEFAULT NULL,
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `UK_6dotkott2kjsp8vw4d0m25fb7` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -192,4 +238,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-04-25 11:23:27
+-- Dump completed on 2022-04-28  0:17:49
