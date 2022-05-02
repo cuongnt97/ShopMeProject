@@ -53,6 +53,9 @@ public class Product {
     @Column(name = "discount_percent")
     private float discountPercent;
 
+    @Column(name = "main_image", nullable = false)
+    private String mainImage;
+
     @Column(nullable = false)
     private float length;
 
@@ -77,5 +80,13 @@ public class Product {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 '}';
+    }
+
+    @Transient
+    public String getMainImagePath(){
+        if (id == null || mainImage == null) {
+            return "/images/image-thumbnail.png";
+        }
+        return ("/product-images/" + this.id + "/" + this.mainImage);
     }
 }

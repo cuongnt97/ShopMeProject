@@ -24,13 +24,13 @@ public class ShopmeUserDetails implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<Role> roles = user.getRoles();
 
-        List<SimpleGrantedAuthority> authories = new ArrayList<>();
+        List<SimpleGrantedAuthority> authorizes = new ArrayList<>();
 
         for (Role role : roles) {
-            authories.add(new SimpleGrantedAuthority(role.getName()));
+            authorizes.add(new SimpleGrantedAuthority(role.getName()));
         }
 
-        return authories;
+        return authorizes;
     }
 
     @Override
@@ -63,7 +63,7 @@ public class ShopmeUserDetails implements UserDetails {
         return user.isEnable();
     }
 
-    public String getFullname() {
+    public String getFullName() {
         return this.user.getFullName();
     }
 

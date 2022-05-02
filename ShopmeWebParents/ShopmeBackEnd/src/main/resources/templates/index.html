@@ -8,7 +8,7 @@
     <div>
         <h1>Shopme Control Panel</h1>
         Welcome
-        <a sec:authentication="principal.fullname" th:href="@{/account}"></a>
+        <a sec:authentication="principal.fullName" th:href="@{/account}"></a>
         <span sec:authentication="principal.authorities"></span>
     </div>
 

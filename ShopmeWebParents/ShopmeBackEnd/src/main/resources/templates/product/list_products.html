@@ -23,29 +23,33 @@
                 <th>Photo</th>
 
                 <th th:replace="fragments :: column_link('/products', 'name', 'Product Name', 'none')"/>
-
-                <th>Categories</th>
-
+                <th>Brand</th>
+                <th>Category</th>
+                <th>Enable</th>
                 <th></th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="brand: ${listProducts}">
-                <td class="hideable-column">[[${brand.id}]]</td>
+            <tr th:each="product: ${listProducts}">
+                <td class="hideable-column">[[${product.id}]]</td>
                 <td class="text-center">
-                    <img style="width: 100px" th:src="@{${product.photoImagePath}}" />
+                <!--    <img style="width: 100px" th:src="@{${product.mainImagePath}}" />  -->
                 </td>
-                <td>[[${brand.name}]]</td>
+                <td>[[${product.name}]]</td>
+                <td>[[${product.brand.name}]]</td>
+                <td>[[${product.category.name}]]</td>
                 <td>
-                    <th:block th:each="category : ${brand.categories}">
-                        <span class="badge badge-secondary" th:text="${category.name}"></span>
-                    </th:block>
+                    <div th:replace="fragments :: status(${product.enable}, 'product', '/products/' + ${product.id})" ></div>
                 </td>
-
                 <td>
-                    <div th:replace="fragments :: edit('brand', '/brands/edit/' + ${brand.id})" />
+                    <a class="fas fa-file-alt fa-2x icon-green link-detail"
+                       th:href="@{'/products/detail/' + ${product.id}}"
+                       title="View details of this product"
+                    ></a>
                     &nbsp;&nbsp;
-                    <div th:replace="fragments :: delete('brand', '/brands/delete/' + ${brand.id}, true)" />
+                    <div th:replace="fragments :: edit('product', '/products/edit/' + ${product.id})" />
+                    &nbsp;&nbsp;
+                    <div th:replace="fragments :: delete('product', '/products/delete/' + ${product.id}, true)" />
                 </td>
             </tr>
             </tbody>
@@ -53,25 +57,30 @@
     </div>
 
     <div class="less-details">
-        <div th:each="brand: ${listBrands}" class="row m-1" >
+        <div th:each="product: ${listProducts}" class="row m-1" >
             <div class="col-6">
-                <img style="width: 100px" th:src="@{${brand.logoImagePath}}" class="img-fluid"/>
+            <!--    <img style="width: 100px" th:src="@{${product.mainImagePath}}" class="img-fluid"/> -->
             </div>
 
             <div class="col-6">
-                <div>[[${brand.name}]]</div>
+                <div>[[${product.name}]]</div>
                 <div class="mt-2"></div>
                 <div>
-                    <div th:replace="fragments :: edit('brand', '/brands/edit/' + ${brand.id})" />
+                    <a class="fas fa-file-alt fa-2x icon-green link-detail"
+                       th:href="@{'/products/detail/' + ${product.id}}"
+                       title="View details of this product"
+                    ></a>
                     &nbsp;&nbsp;
-                    <div th:replace="fragments :: delete('brand', '/brands/delete/' + ${brand.id}, true)" />
+                    <div th:replace="fragments :: edit('product', '/products/edit/' + ${product.id})" />
+                    &nbsp;&nbsp;
+                    <div th:replace="fragments :: delete('product', '/products/delete/' + ${product.id}, true)" />
                 </div>
             </div>
 
             <div>&nbsp;&nbsp;</div>
         </div>
     </div>
-    <div th:replace="fragments :: pagination('/brands', 'brands')"></div>
+    <div th:replace="fragments :: pagination('/products', 'products')"></div>
     <div th:replace="modal_fragments :: confirm_modal"></div>
     <div th:replace="fragments :: footer"></div>
 </div>
@@ -80,11 +89,11 @@
     $(document).ready(function(){
         $(".link-delete").on("click", function(e){
             e.preventDefault();
-            showDeleteConfirmModal($(this), 'brand');
+            showDeleteConfirmModal($(this), 'product');
         });
     });
 
-    moduleURL = "[[@{/brands}]]";
+    moduleURL = "[[@{/products}]]";
 </script>
 </body>
 </html>
