@@ -23,7 +23,7 @@ public class Product {
     @Column(name = "name", nullable = false, length = 256, unique = true)
     private String name;
 
-    @Column(name = "alias", nullable = false, length = 64, unique = true)
+    @Column(name = "alias", nullable = false, length = 256, unique = true)
     private String alias;
 
     @Column(name = "short_description", length = 512, nullable = false)

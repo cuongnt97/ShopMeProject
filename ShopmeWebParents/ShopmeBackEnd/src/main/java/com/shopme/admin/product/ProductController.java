@@ -1,10 +1,16 @@
 package com.shopme.admin.product;
 
+import com.shopme.admin.brand.BrandService;
+import com.shopme.admin.category.CategoryService;
+import com.shopme.common.entities.Brand;
+import com.shopme.common.entities.Category;
 import com.shopme.common.entities.Product;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
 
@@ -14,6 +20,12 @@ public class ProductController {
     @Autowired
     private ProductService service;
 
+    @Autowired
+    private BrandService brandService;
+
+    @Autowired
+    private CategoryService cateService;
+
     @GetMapping("/products")
     public String listAll(Model model) {
         List<Product> listProducts = service.listAll();
@@ -21,5 +33,32 @@ public class ProductController {
         model.addAttribute("listProducts", listProducts);
 
         return "product/list_products";
+    }
+
+    @GetMapping("/products/new")
+    public String newProduct(Model model) {
+        List<Brand> listBrands = brandService.listAll();
+
+        Product product = new Product();
+        product.setEnable(true);
+        product.setInStock(true);
+
+        model.addAttribute("product", product);
+        model.addAttribute("listBrands", listBrands);
+
+        model.addAttribute("pageTitle", "Create Product");
+
+        return "product/product_form";
+    }
+
+    @PostMapping("/products/save")
+    public String saveProduct(Product product) {
+        System.out.println("Product Name" + product.getName());
+
+        System.out.println("Brand Name" + product.getBrand().getId());
+
+        System.out.println("Category Name" + product.getCategory().getId());
+
+        return "redirect:/products";
     }
 }
