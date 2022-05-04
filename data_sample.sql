@@ -120,7 +120,6 @@ CREATE TABLE `products` (
   `cost` float NOT NULL DEFAULT '0',
   `price` float NOT NULL DEFAULT '0',
   `discount_percent` float DEFAULT '0',
-  `main_image` varchar(255) COLLATE utf8_bin NOT NULL,
   `length` float NOT NULL DEFAULT '0',
   `width` float NOT NULL DEFAULT '0',
   `height` float NOT NULL DEFAULT '0',
@@ -134,7 +133,7 @@ CREATE TABLE `products` (
   KEY `FKog2rp4qthbtt2lfyhfo32lsw9` (`category_id`),
   CONSTRAINT `FKa3a4mpsfdf4d2y6r8ra3sc8mv` FOREIGN KEY (`brand_id`) REFERENCES `brands` (`id`),
   CONSTRAINT `FKog2rp4qthbtt2lfyhfo32lsw9` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb3 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -143,7 +142,7 @@ CREATE TABLE `products` (
 
 LOCK TABLES `products` WRITE;
 /*!40000 ALTER TABLE `products` DISABLE KEYS */;
-INSERT INTO `products` VALUES (2,'Dell Inspiron 3000','dell_inspiron_3000','Short description for Dell Laptop','Full description for Dell Laptop','2022-04-27 17:00:46.893000','2022-04-27 17:00:46.893000',_binary '',_binary '',350,450,0,'image.png',0,0,0,0,38,6),(3,'Acer Aspire Desktop','acer_aspire_desktop','Short description for Acer Aspire','Full description for Acer Aspire','2022-04-27 17:02:23.140000','2022-04-27 17:02:23.140000',_binary '',_binary '',600,678,0,'image1.png',0,0,0,0,37,5);
+INSERT INTO `products` VALUES (2,'Dell Inspiron 3000','dell_inspiron_3000','Short description for Dell Laptop','Full description for Dell Laptop','2022-04-27 17:00:46.893000','2022-04-27 17:00:46.893000',_binary '',_binary '',350,450,0,0,0,0,0,38,6),(3,'Acer Aspire Desktop','acer_aspire_desktop','Short description for Acer Aspire','Full description for Acer Aspire','2022-04-27 17:02:23.140000','2022-04-27 17:02:23.140000',_binary '',_binary '',600,678,0,0,0,0,0,37,5),(4,'new product test','new-product-test','<div>short</div>','<div>fulllllllllllllllllllllllll</div>','2022-05-04 15:57:57.042000','2022-05-04 15:57:57.042000',_binary '',_binary '',500,600,0,100,100,100,100,43,22);
 /*!40000 ALTER TABLE `products` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -239,4 +238,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-05-02 23:42:46
+-- Dump completed on 2022-05-04 23:05:04
