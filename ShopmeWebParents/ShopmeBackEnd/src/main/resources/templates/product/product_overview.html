@@ -5,7 +5,7 @@
     <title>Title</title>
 </head>
 <body>
-    <div th:fragment="product_overview" remove="tag">
+    <div th:fragment="content" remove="tag">
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Product Name</label>
             <div class="col-sm-10">
@@ -26,8 +26,7 @@
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Brand</label>
             <div class="col-sm-10">
-                <select th:field="*{brand}" class="form-control" required
-                        onmousedown="if(this.options.length>10){this.size=10;}"  onchange='this.size=0;' onblur="this.size=0;">
+                <select th:field="*{brand}" class="form-control" required>
                     <th:block th:each="brand : ${listBrands}">
                         <option th:value="${brand.id}">[[${brand.name}]]</option>
                     </th:block>
@@ -38,8 +37,7 @@
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Category</label>
             <div class="col-sm-10">
-                <select th:field="*{category}" class="form-control" required
-                        onmousedown="if(this.options.length>5){this.size=5;}"  onchange='this.size=0;' onblur="this.size=0;">
+                <select th:field="*{category}" class="form-control" required>
 
                 </select>
             </div>
