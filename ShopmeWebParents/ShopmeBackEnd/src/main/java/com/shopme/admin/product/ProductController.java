@@ -61,4 +61,10 @@ public class ProductController {
 
         return "redirect:/products";
     }
+
+    @GetMapping("/products/{id}/enable/{enable}")
+    public String updateStatusProduct(){
+
+        return "redirect:/products";
+    }
 }
