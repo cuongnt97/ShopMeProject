@@ -14,7 +14,8 @@
         <h2>Product Management | [[${pageTitle}]]</h2>
     </div>
 
-    <form th:action="@{/products/save}" method="post" th:object="${product}">
+    <form th:action="@{/products/save}" method="post"
+          th:object="${product}" onsubmit="return checkUnique(this)">
 
         <div>
             <!-- Nav tabs -->
@@ -89,6 +90,32 @@
             })
         });
     }
+
+    function checkUnique(form) {
+		prodId = $("#id").val();
+		prodName = $("#name").val();
+
+		csrfValue = $("input[name='_csrf']").val();
+
+		url = "[[@{/products/check_unique}]]";
+
+		params = {id: Number(prodId), name: prodName, _csrf: csrfValue};
+
+		$.post(url, params, function(response) {
+			if (response == "OK") {
+				form.submit();
+			} else if (response == "Duplicated") {
+				showWarningModal("Another product has name " + prodName);
+			} else {
+				showErrorModal("Unknown response from server");
+			}
+
+		}).fail(function() {
+			showErrorModal("Could not connect to the server");
+		});
+
+		return false;
+	}
 
 
 
