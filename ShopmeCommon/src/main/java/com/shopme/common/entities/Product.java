@@ -7,6 +7,8 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -54,8 +56,8 @@ public class Product {
     @Column(name = "discount_percent")
     private float discountPercent;
 
-//    @Column(name = "main_image", nullable = false)
-//    private String mainImage;
+    @Column(name = "main_image", nullable = false)
+    private String mainImage;
 
     @Column(nullable = false)
     private float length;
@@ -74,6 +76,9 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "brand_id")
     private Brand brand;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    private Set<ProductImage> images = new HashSet<>();
 
     @Override
     public String toString() {
