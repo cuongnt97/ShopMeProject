@@ -39,7 +39,7 @@ public class Product {
     @Column(name = "updated_time")
     private Date updatedTime;
 
-    @Column(nullable = false)
+    @Column( name = "enable", nullable = false)
     private boolean enable;
 
     @Column(name = "in_stock")

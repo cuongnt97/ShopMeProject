@@ -10,10 +10,12 @@ import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 @Controller
 public class ProductController {
@@ -63,8 +65,27 @@ public class ProductController {
     }
 
     @GetMapping("/products/{id}/enable/{enable}")
-    public String updateStatusProduct(){
+    public String updateStatusProduct(@PathVariable("id") Integer id
+                                      , @PathVariable("enable") boolean enable
+                                      , RedirectAttributes redirectAttributes ){
 
+        service.updateEnableStatusProduct(id, enable);
+        String status = enable ? "enabled" : "disabled";
+
+        redirectAttributes.addFlashAttribute("message", "The product ID " + id + " has been " + status);
+        return "redirect:/products";
+    }
+
+    @GetMapping("/products/delete/{id}")
+    public String deleteProduct(@PathVariable(value = "id") Integer id, RedirectAttributes redirectAttributes) throws Exception {
+        try {
+            service.deleteProduct(id);
+
+
+            redirectAttributes.addFlashAttribute("message", "Delete product successfully");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("message", e.getMessage());
+        }
         return "redirect:/products";
     }
 }

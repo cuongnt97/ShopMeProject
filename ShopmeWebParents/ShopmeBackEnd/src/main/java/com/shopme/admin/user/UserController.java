@@ -198,7 +198,7 @@ public class UserController {
         service.updateEnableStatusUser(recid, enable);
         String status = enable ? "enabled" : "disabled";
         //Send a notification
-        redirectAttributes.addFlashAttribute("message", "User has been " + status);
+        redirectAttributes.addFlashAttribute("message", "The user ID " + recid + " has been " + status);
 
         return "redirect:/users";
     }
