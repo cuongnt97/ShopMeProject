@@ -108,7 +108,6 @@ public class BrandController {
 
     @PostMapping("/brands/save")
     public String saveBrand(Brand brand
-                            , Model model
                             , @RequestParam("fileImage")MultipartFile multipartFile
                             , RedirectAttributes redirectAttributes) {
 

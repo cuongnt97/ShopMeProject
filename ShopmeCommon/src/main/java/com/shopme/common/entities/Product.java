@@ -88,11 +88,18 @@ public class Product {
                 '}';
     }
 
-//    @Transient
-//    public String getMainImagePath(){
-//        if (id == null || mainImage == null) {
-//            return "/images/image-thumbnail.png";
-//        }
-//        return ("/product-images/" + this.id + "/" + this.mainImage);
-//    }
+    public void addExtraImages(String imageName) {
+        ProductImage productImage = new ProductImage();
+        productImage.setProduct(this);
+        productImage.setName(imageName);
+        this.images.add(productImage);
+    }
+
+    @Transient
+    public String getMainImagePath(){
+        if (id == null || mainImage == null) {
+            return "/images/image-thumbnail.png";
+        }
+        return ("/product-images/" + this.id + "/" + this.mainImage);
+    }
 }
