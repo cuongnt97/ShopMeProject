@@ -67,63 +67,12 @@
 </div>
 
 <script type="text/javascript" th:src="@{/js/common_form.js}"></script>
+<script type="text/javascript" th:src="@{/js/product_form.js}"></script>
 <script type="text/javascript">
     MAX_FILE_SIZE = 512000; //500kb size image
 
     moduleURL = "[[@{/products}]]";
     brandModuleURL = "[[@{/brands}]]";
-    dropdownBrand = $("#brand");
-    dropdownCategory = $("#category");
-
-    $(document).ready(function(){
-
-        $("#shortDescription").richText();
-        $("#fullDescription").richText();
-
-        dropdownBrand.change(function() {
-            dropdownCategory.empty();
-            getCategories();
-        });
-        getCategories();
-    });
-
-    function getCategories() {
-        brandId = dropdownBrand.val();
-        url = brandModuleURL + "/" + brandId + "/categories";
-        $.get(url, function(responseJson) {
-            $.each(responseJson, function(index, category){
-                $("<option>").val(category.id).text(category.name).appendTo(dropdownCategory);
-            })
-        });
-    }
-
-    function checkUnique(form) {
-		prodId = $("#id").val();
-		prodName = $("#name").val();
-
-		csrfValue = $("input[name='_csrf']").val();
-
-		url = "[[@{/products/check_unique}]]";
-
-		params = {id: Number(prodId), name: prodName, _csrf: csrfValue};
-
-		$.post(url, params, function(response) {
-			if (response == "OK") {
-				form.submit();
-			} else if (response == "Duplicated") {
-				showWarningModal("Another product has name " + prodName);
-			} else {
-				showErrorModal("Unknown response from server");
-			}
-
-		}).fail(function() {
-			showErrorModal("Could not connect to the server");
-		});
-
-		return false;
-	}
-
-
 
 </script>
 </body>

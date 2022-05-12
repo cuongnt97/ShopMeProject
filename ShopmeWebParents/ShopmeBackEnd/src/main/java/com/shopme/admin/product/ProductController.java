@@ -61,7 +61,7 @@ public class ProductController {
 
     @PostMapping("/products/save")
     public String saveProduct(Product product
-                              , @RequestParam("fileName")MultipartFile multipartFile
+                              , @RequestParam("fileImage")MultipartFile multipartFile
                               , RedirectAttributes redirectAttributes) throws IOException {
 
         try {
