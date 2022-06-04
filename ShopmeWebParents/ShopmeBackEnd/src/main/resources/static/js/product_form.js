@@ -28,7 +28,28 @@
             };
             reader.readAsDataURL(file);
 
+            addExtraImageSection();
+
     }
+
+    function addExtraImageSection(){
+        htmlScript = `
+            <div class="col border m-3 p-2">
+                <div><label>Extra Image #2</label></div>
+                <div class="m-3">
+                    <img id="extraThumbnail2" alt="Extra image #2 preview" class="img-fluid"
+                                 th:src="@{/images/image-thumbnail.png}" />
+                </div>
+                <div>
+                    <input type="file" id="extraImage2" name="extraImage2"
+                                   accept="image/jpg, image/jpeg"/>
+                </div>
+            </div>
+        `;
+
+        $("#divProductImages").append(htmlScript);
+
+    };
 
     function getCategories() {
         brandId = dropdownBrand.val();

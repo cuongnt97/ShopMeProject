@@ -5,8 +5,8 @@
     <title>Title</title>
 </head>
 <body>
-    <div th:fragment="content" remove="tag">
-        <div class="row">
+    <div th:fragment="content" th:remove="tag">
+        <div class="row" id="divProductImages">
             <div class="col border m-3 p-2">
                 <div><label>Main Image:</label></div>
                 <div class="m-3">
@@ -14,18 +14,19 @@
                 </div>
                 <div>
                     <input type="file" id="fileImage" name="fileImage" required
-                    accept="image/jpg, image/jpge"/>
+                    accept="image/jpg, image/jpeg"/>
                 </div>
             </div>
 
             <div class="col border m-3 p-2">
                 <div><label>Extra Image #1</label></div>
                 <div class="m-3">
-                    <img id="extraThumbnail1" alt="Extra image #1 preview" class="img-fluid" th:src="@{/images/image-thumbnail.png}" />
+                    <img id="extraThumbnail1" alt="Extra image #1 preview" class="img-fluid"
+                         th:src="@{/images/image-thumbnail.png}" />
                 </div>
                 <div>
                     <input type="file" id="extraImage1" name="extraImage1"
-                           accept="image/jpg, image/jpge"/>
+                           accept="image/jpg, image/jpeg"/>
                 </div>
             </div>
 
