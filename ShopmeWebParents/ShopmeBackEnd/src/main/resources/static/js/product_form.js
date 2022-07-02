@@ -1,3 +1,4 @@
+    var extraImageCount = 0;
     dropdownBrand = $("#brand");
     dropdownCategory = $("#category");
 
@@ -11,45 +12,60 @@
             getCategories();
         });
         getCategories();
-
-        $("#extraImage1").change(function(){
-            if (!checkFileSize(this)) {
-                return;
-            }
-            showExtraImageThumbnail(this);
+        $("input[name='extraImage']").each(function(index){
+            extraImageCount++;
+            $(this).change(function(){
+                showExtraImageThumbnail(this, index);
+            });
         });
     });
 
-    function showExtraImageThumbnail(fileInput) {
+    function showExtraImageThumbnail(fileInput, index) {
         var file = fileInput.files[0];
             var reader = new FileReader();
             reader.onload = function(e){
-                $("#extraThumbnail1").attr("src", e.target.result);
+                $("#extraThumbnail" + index).attr("src", e.target.result);
             };
             reader.readAsDataURL(file);
 
-            addExtraImageSection();
+            if (index >= extraImageCount - 1){
+                addNextExtraImageSection(index + 1);
+            }
+
 
     }
 
-    function addExtraImageSection(){
-        htmlScript = `
-            <div class="col border m-3 p-2">
-                <div><label>Extra Image #2</label></div>
+    function addNextExtraImageSection(index){
+        htmlExtraImage = `
+            <div class="col border m-3 p-2" id="divExtraImage${index}">
+                <div id="extraImageHeader${index}"><label>Extra Image #${index + 1}</label></div>
                 <div class="m-3">
-                    <img id="extraThumbnail2" alt="Extra image #2 preview" class="img-fluid"
-                                 th:src="@{/images/image-thumbnail.png}" />
+                    <img id="extraThumbnail${index}" alt="Extra image #${index + 1} preview" class="img-fluid"
+                                 src="${defaultImageThumbnailSrc}"/>
                 </div>
                 <div>
-                    <input type="file" id="extraImage2" name="extraImage2"
+                    <input type="file" name="extraImage"
+                                   onchange="showExtraImageThumbnail(this, ${index})"
                                    accept="image/jpg, image/jpeg"/>
                 </div>
             </div>
         `;
 
-        $("#divProductImages").append(htmlScript);
+        htmlLinkRemove = `
+            <a class="btn fas fa-times-circle fa-2x float-right"
+                href="javascript:removeExtraImage(${index - 1})"
+                title="Remove this image"></a>
+        `;
+
+        $("#divProductImages").append(htmlExtraImage);
+        $("#extraImageHeader" + (index - 1)).append(htmlLinkRemove);
+        extraImageCount++;
 
     };
+
+    function removeExtraImage(index){
+        $("#divExtraImage" + index).remove();
+    }
 
     function getCategories() {
         brandId = dropdownBrand.val();
