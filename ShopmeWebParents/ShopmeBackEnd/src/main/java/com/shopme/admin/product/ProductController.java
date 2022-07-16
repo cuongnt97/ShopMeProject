@@ -4,10 +4,8 @@ import com.shopme.admin.brand.BrandService;
 import com.shopme.admin.category.CategoryService;
 import com.shopme.admin.common.FileUploadUtil;
 import com.shopme.common.entities.Brand;
-import com.shopme.common.entities.Category;
 import com.shopme.common.entities.Product;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -20,7 +18,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 @Controller
 public class ProductController {
@@ -61,32 +58,26 @@ public class ProductController {
 
     @PostMapping("/products/save")
     public String saveProduct(Product product
-                              , @RequestParam("fileImage")MultipartFile multipartFile
-                              , RedirectAttributes redirectAttributes) throws IOException {
+            , @RequestParam("fileImage") MultipartFile mainImageMultipart
+            , @RequestParam("extraImage") MultipartFile[] extraImageMultipart
+            , RedirectAttributes redirectAttributes) throws IOException {
 
         try {
-            boolean isCreatingNew = (product.getId() == null ||product.getId() == 0);
-            if (!multipartFile.isEmpty()){
-                String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
-                product.setMainImage(fileName);
+            setMainImageName(mainImageMultipart, product);
+            setExtraImageNames(extraImageMultipart, product);
 
-                Product savedProduct = service.saveProduct(product);
+            boolean isCreatingNew = (product.getId() == null || product.getId() == 0);
 
-                String uploadDir = "product-images/" + savedProduct.getId();
+            Product savedProduct = service.saveProduct(product);
 
-                FileUploadUtil.cleanDirectory(uploadDir);
+            saveUploadedImages(mainImageMultipart, extraImageMultipart, savedProduct);
 
-                FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
-            } else {
-                service.saveProduct(product);
-            }
-
-            if (isCreatingNew){
+            if (isCreatingNew) {
                 redirectAttributes.addFlashAttribute("message"
                         , "The product has been added successfully.");
-            } else{
+            } else {
                 redirectAttributes.addFlashAttribute("message"
-                        ,"The product has been updated successfully." );
+                        , "The product has been updated successfully.");
             }
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("message", e.getMessage());
@@ -95,10 +86,51 @@ public class ProductController {
         return "redirect:/products";
     }
 
+    private void saveUploadedImages(MultipartFile mainImageMultipart
+            , MultipartFile[] extraImageMultipart, Product savedProduct) throws IOException {
+
+        if (!mainImageMultipart.isEmpty()) {
+            String fileName = StringUtils.cleanPath(mainImageMultipart.getOriginalFilename());
+            String uploadDir = "product-images/" + savedProduct.getId();
+            FileUploadUtil.cleanDirectory(uploadDir);
+            FileUploadUtil.saveFile(uploadDir, fileName, mainImageMultipart);
+
+        }
+
+        if (extraImageMultipart.length > 0) {
+            String uploadDir = "product-images/" + savedProduct.getId() + "/extras";
+            for (MultipartFile multipartFile : extraImageMultipart) {
+                if (multipartFile.isEmpty()){
+                    continue;
+                }
+                String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+                FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
+            }
+        }
+    }
+
+    private void setExtraImageNames(MultipartFile[] extraImageMultipart, Product product) {
+        if (extraImageMultipart.length > 0) {
+            for (MultipartFile multipartFile : extraImageMultipart) {
+                if (!multipartFile.isEmpty()) {
+                    String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+                    product.addExtraImages(fileName);
+                }
+            }
+        }
+    }
+
+    private void setMainImageName(MultipartFile mainImageMultipart, Product product) {
+        if (!mainImageMultipart.isEmpty()) {
+            String fileName = StringUtils.cleanPath(mainImageMultipart.getOriginalFilename());
+            product.setMainImage(fileName);
+        }
+    }
+
     @GetMapping("/products/{id}/enable/{enable}")
     public String updateStatusProduct(@PathVariable("id") Integer id
-                                      , @PathVariable("enable") boolean enable
-                                      , RedirectAttributes redirectAttributes ){
+            , @PathVariable("enable") boolean enable
+            , RedirectAttributes redirectAttributes) {
 
         service.updateEnableStatusProduct(id, enable);
         String status = enable ? "enabled" : "disabled";
@@ -111,7 +143,11 @@ public class ProductController {
     public String deleteProduct(@PathVariable(value = "id") Integer id, RedirectAttributes redirectAttributes) throws Exception {
         try {
             service.deleteProduct(id);
+            String extraImageDir = "product-images/" + id + "/extras";
+            String mainImageDir = "product-images/" + id;
 
+            FileUploadUtil.removeDir(extraImageDir);
+            FileUploadUtil.removeDir(mainImageDir);
 
             redirectAttributes.addFlashAttribute("message", "Delete product successfully");
         } catch (Exception e) {
