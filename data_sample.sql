@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.21, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.28, for macos11 (x86_64)
 --
 -- Host: localhost    Database: shopmedb
 -- ------------------------------------------------------
--- Server version	8.0.21
+-- Server version	8.0.28
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -109,12 +109,12 @@ DROP TABLE IF EXISTS `product_images`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `product_images` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
+  `name` varchar(255) COLLATE utf8_bin NOT NULL,
   `product_id` int DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FKqnq71xsohugpqwf3c9gxmsuy` (`product_id`),
   CONSTRAINT `FKqnq71xsohugpqwf3c9gxmsuy` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb3 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -123,7 +123,7 @@ CREATE TABLE `product_images` (
 
 LOCK TABLES `product_images` WRITE;
 /*!40000 ALTER TABLE `product_images` DISABLE KEYS */;
-INSERT INTO `product_images` VALUES (1,'Extra image2.png',2),(2,'Extra image1.png',2),(3,'Extra image4.png',2),(4,'Extra image3.png',2);
+INSERT INTO `product_images` VALUES (15,'C24C44C9-4E2C-4437-A2AC-8F64ACF935DB.jpeg',11),(16,'CDE78AE3-546F-4909-B20A-98477C4338FA.jpeg',11),(17,'C5732904-6857-4CA2-A03A-8451AEBF2D4D.jpeg',12),(18,'C295A702-2B21-41CF-9C1E-F6746DA8A1FA.jpeg',12);
 /*!40000 ALTER TABLE `product_images` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -136,11 +136,10 @@ DROP TABLE IF EXISTS `products`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `products` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(256) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
-  `alias` varchar(64) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
-  `short_description` varchar(512) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
-  `full_description` varchar(4096) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
-  `main_image` varchar(255) COLLATE utf8_bin NOT NULL,
+  `name` varchar(256) COLLATE utf8_bin NOT NULL,
+  `alias` varchar(64) COLLATE utf8_bin NOT NULL,
+  `short_description` varchar(512) COLLATE utf8_bin NOT NULL,
+  `full_description` varchar(4096) COLLATE utf8_bin NOT NULL,
   `created_time` datetime(6) DEFAULT NULL,
   `updated_time` datetime(6) DEFAULT NULL,
   `enable` bit(1) NOT NULL DEFAULT b'1',
@@ -154,6 +153,7 @@ CREATE TABLE `products` (
   `weight` float NOT NULL DEFAULT '0',
   `brand_id` int DEFAULT NULL,
   `category_id` int DEFAULT NULL,
+  `main_image` varchar(255) COLLATE utf8_bin NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UK_8qwq8q3hk7cxkp9gruxupnif5` (`alias`),
   UNIQUE KEY `UK_o61fmio5yukmmiqgnxf8pnavn` (`name`),
@@ -161,7 +161,7 @@ CREATE TABLE `products` (
   KEY `FKog2rp4qthbtt2lfyhfo32lsw9` (`category_id`),
   CONSTRAINT `FKa3a4mpsfdf4d2y6r8ra3sc8mv` FOREIGN KEY (`brand_id`) REFERENCES `brands` (`id`),
   CONSTRAINT `FKog2rp4qthbtt2lfyhfo32lsw9` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb3 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -170,7 +170,7 @@ CREATE TABLE `products` (
 
 LOCK TABLES `products` WRITE;
 /*!40000 ALTER TABLE `products` DISABLE KEYS */;
-INSERT INTO `products` VALUES (2,'Dell Inspiron 3000','dell_inspiron_3000','Short description for Dell Laptop','Full description for Dell Laptop','main image.jpg','2022-04-27 17:00:46.893000','2022-04-27 17:00:46.893000',_binary '',_binary '',350,450,0,0,0,0,0,38,6),(3,'Acer Aspire Desktop','acer_aspire_desktop','Short description for Acer Aspire','Full description for Acer Aspire','','2022-04-27 17:02:23.140000','2022-04-27 17:02:23.140000',_binary '',_binary '',600,678,0,0,0,0,0,37,5),(4,'new product test','new-product-test','<div>short</div>','<div>fulllllllllllllllllllllllll</div>','','2022-05-04 15:57:57.042000','2022-05-04 15:57:57.042000',_binary '\0',_binary '',500,600,0,100,100,100,100,43,22);
+INSERT INTO `products` VALUES (2,'Dell Inspiron 3000','dell_inspiron_3000','Short description for Dell Laptop','Full description for Dell Laptop','2022-04-27 17:00:46.893000','2022-04-27 17:00:46.893000',_binary '',_binary '',350,450,0,0,0,0,0,38,6,''),(3,'Acer Aspire Desktop','acer_aspire_desktop','Short description for Acer Aspire','Full description for Acer Aspire','2022-04-27 17:02:23.140000','2022-04-27 17:02:23.140000',_binary '',_binary '',600,678,0,0,0,0,0,37,5,''),(11,'new product test1','new-product-test1','<div>12</div>','<div>123</div>','2022-07-16 10:44:25.969000','2022-07-16 10:44:25.969000',_binary '',_binary '',0,0,0,0,0,0,0,37,5,'C5732904-6857-4CA2-A03A-8451AEBF2D4D.jpeg'),(12,'new product test2','new-product-test2','<div>fqadwefadsv</div>','<div>bsdfgbsdfb</div>','2022-07-16 10:48:28.528000','2022-07-16 10:48:28.528000',_binary '',_binary '',0,0,0,0,0,0,0,37,6,'C24C44C9-4E2C-4437-A2AC-8F64ACF935DB.jpeg');
 /*!40000 ALTER TABLE `products` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -266,4 +266,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-05-11 18:23:40
+-- Dump completed on 2022-08-02 21:50:20
