@@ -3,6 +3,7 @@ package com.shopme.admin.product;
 import com.shopme.common.entities.Brand;
 import com.shopme.common.entities.Category;
 import com.shopme.common.entities.Product;
+import com.shopme.common.entities.ProductDetail;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -114,5 +115,19 @@ public class ProductRepositoryTest {
         Product savedProduct = repo.save(product);
 
         assertThat(savedProduct.getImages().size()).isEqualTo(4);
+    }
+
+    @Test
+    public void testSaveProductDetail() {
+        Integer productId = 3;
+
+        Product prdDetail = repo.findById(productId).get();
+
+        prdDetail.addDetail("Device Memory", "128 GB");
+        prdDetail.addDetail("CPU Model", "A14");
+        prdDetail.addDetail("OS", "iOS");
+
+        Product savedPrd = repo.save(prdDetail);
+        assertThat(savedPrd.getDetails()).isNotEmpty();
     }
 }

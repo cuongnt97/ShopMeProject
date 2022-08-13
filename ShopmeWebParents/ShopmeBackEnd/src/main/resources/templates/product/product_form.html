@@ -41,16 +41,27 @@
 
             <!-- Tab panes -->
             <div class="tab-content">
+                <!--Tab content-->
                 <div class="tab-pane active p-3" id="overview" role="tabpanel">
                     <div th:replace="product/product_overview :: content"></div>
                 </div>
+                <!--Tab Description-->
                 <div class="tab-pane" id="description" role="tabpanel" >
                     <div th:replace="product/product_description :: content"></div>
                 </div>
+                <!--Tab Images-->
                 <div class="tab-pane" id="images" role="tabpanel" >
                     <div th:replace="product/product_images :: content"></div>
                 </div>
-                <div class="tab-pane" id="details" role="tabpanel" >Details</div>
+                <!--Tab Details-->
+                <div class="tab-pane p-3" id="details" role="tabpanel" >
+                    <div th:replace="product/product_details :: content"></div>
+                    <div>
+                        <input type="button" class="btn btn-secondary m-3" value="Add More Detail"
+                                onclick="addExtraDetailSection()" />
+                    </div>
+                </div>
+                <!--Tab Shipping-->
                 <div class="tab-pane p-3" id="shipping" role="tabpanel" >
                     <div th:replace="product/product_shipping :: content"></div>
                 </div>
@@ -76,7 +87,9 @@
 
 </script>
 <script type="text/javascript" th:src="@{/js/common_form.js}"></script>
-<script type="text/javascript" th:src="@{/js/product_form.js}"></script>
+<script type="text/javascript" th:src="@{/js/product_form_overview.js}"></script>
+<script type="text/javascript" th:src="@{/js/product_form_images.js}"></script>
+<script type="text/javascript" th:src="@{/js/product_form_details.js}"></script>
 </body>
 
 </html>
